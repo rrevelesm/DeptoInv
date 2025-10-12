@@ -1,14 +1,49 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from models import (
     init_db, get_session, Investigador, SNII, Proyecto, Publicacion,
     investigador_proyecto, investigador_publicacion
 )
 from datetime import datetime
 import os
+import secrets
+
+# Importar utilidades de seguridad
+from security_utils import (
+    require_auth, validar_archivo, generar_nombre_archivo_seguro,
+    validar_datos_investigador, sanitizar_datos_formulario,
+    log_archivo_rechazado, log_actividad_sospechosa
+)
 
 app = Flask(__name__, static_folder='static')
-CORS(app)
+
+# 🔒 CONFIGURACIÓN DE SEGURIDAD
+# SECRET_KEY para sesiones seguras (en producción usar variable de entorno)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', secrets.token_hex(32))
+
+# CORS Restringido - Solo permitir orígenes específicos
+CORS(app, resources={
+    r"/api/formulario-investigador": {
+        "origins": ["http://127.0.0.1:5000", "http://localhost:5000", "http://192.168.0.6:5000"],
+        "methods": ["POST"],
+        "allow_headers": ["Content-Type"]
+    },
+    r"/api/investigadores": {
+        "origins": ["http://127.0.0.1:5000", "http://localhost:5000"],
+        "methods": ["GET", "POST", "PUT", "DELETE"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
+
+# Rate Limiting - Protección contra DDoS y spam
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
 
 # Inicializar base de datos
 init_db()
@@ -25,6 +60,7 @@ def panel_formularios():
 
 # API para listar formularios recibidos
 @app.route('/api/formularios-lista', methods=['GET'])
+@require_auth  # 🔒 Protegido - requiere token de admin
 def listar_formularios():
     """Lista todos los formularios recibidos"""
     import json
@@ -56,6 +92,8 @@ def listar_formularios():
 
 # API para exportar formularios a Excel
 @app.route('/api/exportar-formularios-excel', methods=['GET'])
+@require_auth  # 🔒 Protegido - requiere token de admin
+@limiter.limit("10 per hour")  # Límite de descargas
 def exportar_excel_endpoint():
     """Exporta todos los formularios a Excel y lo descarga"""
     import json
@@ -152,6 +190,7 @@ def exportar_excel_endpoint():
 # ============== RUTAS DE INVESTIGADORES ==============
 
 @app.route('/api/investigadores', methods=['GET'])
+@require_auth  # 🔒 Protegido - requiere token de admin
 def get_investigadores():
     session = get_session()
     try:
@@ -161,6 +200,7 @@ def get_investigadores():
         session.close()
 
 @app.route('/api/investigadores/<int:id>', methods=['GET'])
+@require_auth  # 🔒 Protegido
 def get_investigador(id):
     session = get_session()
     try:
@@ -179,6 +219,7 @@ def get_investigador(id):
         session.close()
 
 @app.route('/api/investigadores', methods=['POST'])
+@require_auth  # 🔒 Protegido
 def create_investigador():
     session = get_session()
     try:
@@ -206,6 +247,7 @@ def create_investigador():
         session.close()
 
 @app.route('/api/investigadores/<int:id>', methods=['PUT'])
+@require_auth  # 🔒 Protegido
 def update_investigador(id):
     session = get_session()
     try:
@@ -237,6 +279,7 @@ def update_investigador(id):
         session.close()
 
 @app.route('/api/investigadores/<int:id>', methods=['DELETE'])
+@require_auth  # 🔒 Protegido
 def delete_investigador(id):
     session = get_session()
     try:
@@ -586,16 +629,33 @@ def delete_publicacion(id):
 # ============== RUTAS DE ESTADÍSTICAS ==============
 
 @app.route('/api/formulario-investigador', methods=['POST'])
+@limiter.limit("5 per hour")  # 🔒 Máximo 5 formularios por hora por IP
 def guardar_formulario_investigador():
     """Guarda los datos del formulario de investigador con archivo adjunto"""
     import json
     from datetime import datetime as dt
-    from werkzeug.utils import secure_filename
     
     try:
         # Obtener datos JSON
         datos_json = request.form.get('datos')
         data = json.loads(datos_json) if datos_json else {}
+        
+        # 🔒 VALIDAR DATOS DEL FORMULARIO
+        es_valido, errores = validar_datos_investigador(data)
+        if not es_valido:
+            log_actividad_sospechosa(
+                request.remote_addr,
+                '/api/formulario-investigador',
+                f"Datos inválidos: {', '.join(errores)}"
+            )
+            return jsonify({
+                'success': False,
+                'error': 'Datos inválidos',
+                'detalles': errores
+            }), 400
+        
+        # 🔒 SANITIZAR DATOS (limpiar caracteres peligrosos)
+        data = sanitizar_datos_formulario(data)
         
         # Crear directorios si no existen
         if not os.path.exists('formularios'):
@@ -606,21 +666,35 @@ def guardar_formulario_investigador():
         # Agregar timestamp
         data['timestamp'] = dt.now().isoformat()
         
-        # Guardar archivo SNII si existe
+        # 🔒 VALIDAR Y GUARDAR ARCHIVO SNII CON SEGURIDAD
         archivo_guardado = None
         if 'sniiConstancia' in request.files:
             archivo = request.files['sniiConstancia']
             if archivo and archivo.filename:
-                # Crear nombre seguro para el archivo
-                nombre_original = secure_filename(archivo.filename)
-                extension = os.path.splitext(nombre_original)[1]
-                nombre_archivo = f"snii_{data.get('claveEmpleado', 'sin_clave')}_{dt.now().strftime('%Y%m%d_%H%M%S')}{extension}"
-                ruta_archivo = os.path.join('formularios/constancias_snii', nombre_archivo)
-                
-                # Guardar archivo
-                archivo.save(ruta_archivo)
-                data['sniiConstanciaArchivo'] = ruta_archivo
-                archivo_guardado = nombre_archivo
+                try:
+                    # Validar archivo (tipo y tamaño)
+                    validar_archivo(archivo)
+                    
+                    # Generar nombre seguro
+                    nombre_archivo = generar_nombre_archivo_seguro(
+                        archivo.filename,
+                        prefijo=f"snii_{data.get('claveEmpleado', 'sin_clave')}"
+                    )
+                    
+                    ruta_archivo = os.path.join('formularios/constancias_snii', nombre_archivo)
+                    
+                    # Guardar archivo
+                    archivo.save(ruta_archivo)
+                    data['sniiConstanciaArchivo'] = ruta_archivo
+                    archivo_guardado = nombre_archivo
+                    
+                except ValueError as e:
+                    # Archivo inválido
+                    log_archivo_rechazado(request.remote_addr, archivo.filename, str(e))
+                    return jsonify({
+                        'success': False,
+                        'error': f'Archivo inválido: {str(e)}'
+                    }), 400
         
         # Guardar datos en archivo JSON
         filename = f"formularios/investigador_{data.get('claveEmpleado', 'sin_clave')}_{dt.now().strftime('%Y%m%d_%H%M%S')}.json"
@@ -634,6 +708,12 @@ def guardar_formulario_investigador():
             'constancia_snii': archivo_guardado
         }), 201
     except Exception as e:
+        # Log de error general
+        log_actividad_sospechosa(
+            request.remote_addr,
+            '/api/formulario-investigador',
+            f"Error: {str(e)}"
+        )
         return jsonify({
             'success': False,
             'error': str(e)
@@ -668,6 +748,24 @@ def static_files(path):
 
 if __name__ == '__main__':
     # host='0.0.0.0' permite acceso desde otras computadoras en la red local
-    app.run(host='0.0.0.0', debug=True, port=5000)
+    # 🔒 DEBUG MODE: False en producción, True solo en desarrollo
+    DEBUG_MODE = os.environ.get('DEBUG', 'False').lower() == 'true'
+    
+    print("="*60)
+    print("🔒 SERVIDOR INICIANDO CON SEGURIDAD")
+    print("="*60)
+    print(f"🛡️  Rate Limiting: Activado (5 formularios/hora)")
+    print(f"🔐 Autenticación: Requerida en rutas admin")
+    print(f"✅ Validación: Activada (CURP, email, archivos)")
+    print(f"🔒 CORS: Restringido a localhost")
+    print(f"⚙️  Debug Mode: {'ACTIVADO ⚠️' if DEBUG_MODE else 'DESACTIVADO ✅'}")
+    if DEBUG_MODE:
+        print("⚠️  ADVERTENCIA: Debug activo - NO usar en producción")
+    print("="*60)
+    print(f"📡 Servidor: http://127.0.0.1:5000")
+    print(f"📋 Formulario: http://127.0.0.1:5000/formulario")
+    print("="*60)
+    
+    app.run(host='0.0.0.0', debug=DEBUG_MODE, port=5000)
 
 

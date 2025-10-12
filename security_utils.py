@@ -43,7 +43,11 @@ def require_auth(f):
             return jsonify({'error': 'Formato de autenticación inválido'}), 401
         
         # Verificar token (cargar desde config o variable de entorno)
-        ADMIN_TOKEN = os.environ.get('ADMIN_TOKEN', 'token_temporal_desarrollo')
+        try:
+            from config import ADMIN_TOKEN
+        except ImportError:
+            ADMIN_TOKEN = os.environ.get('ADMIN_TOKEN', 'token_temporal_desarrollo')
+        
         if token != ADMIN_TOKEN:
             log_acceso_denegado(request.remote_addr, request.path, "Token inválido")
             return jsonify({'error': 'Token inválido'}), 401
