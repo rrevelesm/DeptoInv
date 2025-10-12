@@ -2,6 +2,20 @@
 
 Sistema web para la gestión integral de investigadores, proyectos, publicaciones y formularios de recolección de datos del Departamento de Investigación de la UPIIZ (Unidad Profesional Interdisciplinaria de Ingeniería Campus Zacatecas) del Instituto Politécnico Nacional.
 
+---
+
+## 📚 Documentación Rápida
+
+| Documento | Descripción |
+|-----------|-------------|
+| 📋 [**GUIA_RAPIDA.md**](GUIA_RAPIDA.md) | Comandos más usados - consulta diaria |
+| 🚀 [**PIPELINE_EJECUCION.md**](PIPELINE_EJECUCION.md) | Guía completa para ejecutar en nuevas máquinas |
+| ⚡ **INICIAR_PROYECTO.bat** | Script automatizado - ejecutar con doble clic |
+
+**Para nuevos usuarios:** Leer [PIPELINE_EJECUCION.md](PIPELINE_EJECUCION.md) primero
+
+**Uso diario:** Solo ejecutar `INICIAR_PROYECTO.bat` o consultar [GUIA_RAPIDA.md](GUIA_RAPIDA.md)
+
 ## 🌐 Demo en Vivo
 
 **URL del Sistema:** [https://upiiz-investigacion.pythonanywhere.com](https://upiiz-investigacion.pythonanywhere.com) *(cuando esté desplegado)*
