@@ -800,14 +800,17 @@
                                     <div class="form-group">
                                         <label for="red1Inicio">Fecha de Inicio <span class="required">*</span></label>
                                         <input type="date" id="red1Inicio" name="red1Inicio">
+                                        <div class="help-text">
+                                            Inicio de participación en la red
+                                        </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="red1Vigente">Estado</label>
-                                        <select id="red1Vigente" name="red1Vigente">
-                                            <option value="Vigente">Vigente</option>
-                                            <option value="Concluido">Concluido</option>
-                                        </select>
+                                        <label for="red1Termino">Fecha de Término</label>
+                                        <input type="date" id="red1Termino" name="red1Termino">
+                                        <div class="help-text">
+                                            Dejar vacío si aún participa (vigente)
+                                        </div>
                                     </div>
                                 </div>
 
@@ -865,14 +868,17 @@
                                     <div class="form-group">
                                         <label for="red2Inicio">Fecha de Inicio</label>
                                         <input type="date" id="red2Inicio" name="red2Inicio">
+                                        <div class="help-text">
+                                            Inicio de participación en la red
+                                        </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="red2Vigente">Estado</label>
-                                        <select id="red2Vigente" name="red2Vigente">
-                                            <option value="Vigente">Vigente</option>
-                                            <option value="Concluido">Concluido</option>
-                                        </select>
+                                        <label for="red2Termino">Fecha de Término</label>
+                                        <input type="date" id="red2Termino" name="red2Termino">
+                                        <div class="help-text">
+                                            Dejar vacío si aún participa (vigente)
+                                        </div>
                                     </div>
                                 </div>
 
@@ -1534,17 +1540,17 @@
                 red1Nombre.required = false;
                 red1Rol.required = false;
                 red1Inicio.required = false;
-                // Limpiar campos
+                // Limpiar campos Red 1
                 red1Nombre.value = '';
                 red1Rol.value = '';
                 red1Inicio.value = '';
-                document.getElementById('red1Vigente').value = 'Vigente';
+                document.getElementById('red1Termino').value = '';
                 document.getElementById('red1Constancia').value = '';
-                // Red 2
+                // Limpiar campos Red 2
                 document.getElementById('red2Nombre').value = '';
                 document.getElementById('red2Rol').value = '';
                 document.getElementById('red2Inicio').value = '';
-                document.getElementById('red2Vigente').value = 'Vigente';
+                document.getElementById('red2Termino').value = '';
                 document.getElementById('red2Constancia').value = '';
             }
         }
