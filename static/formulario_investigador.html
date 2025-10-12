@@ -822,30 +822,33 @@
                 <div class="section">
                     <div class="section-title">
                         <span>📄</span>
-                        <span>Productividad Académica 2025</span>
+                        <span>Publicaciones Científicas 2025 (con DOI)</span>
                     </div>
 
                     <div class="form-group">
                         <label>
-                            DOI de publicaciones 2025 (Artículos, Revistas, Proceedings)
+                            DOI de Publicaciones 2025
                         </label>
-                        <div class="help-text" style="margin-bottom: 15px;">
-                            <strong>Si cuenta con publicaciones en 2025</strong>, agregue el DOI y el tipo de publicación.<br>
-                            Puede agregar múltiples DOIs. Si no tiene publicaciones aún, puede dejar esta sección vacía.
+                        <div class="help-text" style="margin-bottom: 15px; padding: 12px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #2196F3;">
+                            <strong>📌 Solo publicaciones con DOI (Digital Object Identifier)</strong><br>
+                            Agregue todas sus publicaciones científicas de 2025 que cuenten con DOI.<br>
+                            <strong>💡 Incluye:</strong> Artículos, libros, capítulos de libro, proceedings de conferencias, preprints con DOI.<br>
+                            Si no tiene publicaciones aún en 2025, puede dejar esta sección vacía.
                         </div>
 
                         <div id="doisContainer">
                             <div class="line-item" style="display: grid; grid-template-columns: 1fr 2fr auto; gap: 10px; align-items: center;">
-                                <select name="tipoDoi1" style="min-width: 150px;">
-                                    <option value="">Tipo...</option>
-                                    <option value="Artículo">Artículo</option>
-                                    <option value="Revista">Revista</option>
-                                    <option value="Proceedings">Proceedings</option>
+                                <select name="tipoDoi1" style="min-width: 180px;">
+                                    <option value="">Tipo de publicación...</option>
+                                    <option value="Artículo de revista">Artículo de revista</option>
+                                    <option value="Proceedings">Proceedings de conferencia</option>
                                     <option value="Capítulo de libro">Capítulo de libro</option>
-                                    <option value="Libro">Libro</option>
-                                    <option value="Conferencia">Conferencia</option>
+                                    <option value="Libro completo">Libro completo</option>
+                                    <option value="Preprint">Preprint (arXiv, bioRxiv, etc.)</option>
+                                    <option value="Dataset">Dataset científico</option>
+                                    <option value="Otra publicación con DOI">Otra publicación con DOI</option>
                                 </select>
-                                <input type="text" name="doi1" placeholder="DOI (Ej: 10.1234/ejemplo.2025.001)">
+                                <input type="text" name="doi1" placeholder="DOI (Ej: 10.1234/revista.2025.001)">
                             </div>
                         </div>
 
@@ -1406,8 +1409,8 @@
         }
 
         function agregarDoi() {
-            if (doiCount >= 10) {
-                alert('Máximo 10 publicaciones');
+            if (doiCount >= 20) {
+                alert('Máximo 20 publicaciones');
                 return;
             }
 
@@ -1420,16 +1423,17 @@
             div.style.gap = '10px';
             div.style.alignItems = 'center';
             div.innerHTML = `
-                <select name="tipoDoi${doiCount}" style="min-width: 150px;">
-                    <option value="">Tipo...</option>
-                    <option value="Artículo">Artículo</option>
-                    <option value="Revista">Revista</option>
-                    <option value="Proceedings">Proceedings</option>
+                <select name="tipoDoi${doiCount}" style="min-width: 180px;">
+                    <option value="">Tipo de publicación...</option>
+                    <option value="Artículo de revista">Artículo de revista</option>
+                    <option value="Proceedings">Proceedings de conferencia</option>
                     <option value="Capítulo de libro">Capítulo de libro</option>
-                    <option value="Libro">Libro</option>
-                    <option value="Conferencia">Conferencia</option>
+                    <option value="Libro completo">Libro completo</option>
+                    <option value="Preprint">Preprint (arXiv, bioRxiv, etc.)</option>
+                    <option value="Dataset">Dataset científico</option>
+                    <option value="Otra publicación con DOI">Otra publicación con DOI</option>
                 </select>
-                <input type="text" name="doi${doiCount}" placeholder="DOI (Ej: 10.1234/ejemplo.2025.001)">
+                <input type="text" name="doi${doiCount}" placeholder="DOI (Ej: 10.1234/revista.2025.001)">
                 <button type="button" class="btn-remove" onclick="removerDoi(this)">✕</button>
             `;
             container.appendChild(div);
@@ -1468,7 +1472,7 @@
                 
                 const proyecto = {
                     financiamiento: financiamiento,
-                    nombre: nombre
+                        nombre: nombre
                 };
                 
                 if (financiamiento === 'Interno IPN') {
