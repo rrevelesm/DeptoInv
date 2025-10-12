@@ -621,7 +621,170 @@
                     </div>
                 </div>
 
-                <!-- Sección 6: Líneas de Investigación -->
+                <!-- Sección 6: Redes de Investigación IPN -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>🌐</span>
+                        <span>Redes de Investigación IPN (CORIyP)</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Participa en alguna Red de Investigación del IPN? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="participaRedes" value="Si" onclick="toggleRedes(true)" required>
+                                <span>Sí</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="participaRedes" value="No" onclick="toggleRedes(false)" required>
+                                <span>No</span>
+                            </label>
+                        </div>
+
+                        <div class="conditional-field" id="redesFields">
+                            <div class="help-text" style="margin-bottom: 20px; padding: 12px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #2196F3;">
+                                <strong>📌 Información:</strong> Las Redes de Investigación y Posgrado del IPN están coordinadas por la CORIyP.<br>
+                                Puede seleccionar hasta <strong>2 redes</strong> en las que participe actualmente.<br>
+                                <strong>💡 Consulte más información en:</strong> 
+                                <a href="https://www.ipn.mx/coriyp/" target="_blank" style="color: #1976d2; font-weight: 600;">
+                                    www.ipn.mx/coriyp
+                                </a>
+                            </div>
+
+                            <!-- Red 1 -->
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 2px solid #e0e0e0; margin-bottom: 20px;">
+                                <h4 style="color: #6B1F3D; margin-bottom: 15px;">Red de Investigación 1 <span class="required">*</span></h4>
+                                
+                                <div class="form-group">
+                                    <label for="red1Nombre">Nombre de la Red <span class="required">*</span></label>
+                                    <select id="red1Nombre" name="red1Nombre">
+                                        <option value="">Seleccione una red...</option>
+                                        <optgroup label="🔬 Redes de Investigación (REI)">
+                                            <option value="REI01-REMA">REI01-REMA | Red de Medio Ambiente</option>
+                                            <option value="REI02-RBIO">REI02-RBIO | Red de Biotecnología</option>
+                                            <option value="REI03-RNMN">REI03-RNMN | Red de Nanociencia y Micro-nanotecnología</option>
+                                            <option value="REI04-RCOM">REI04-RCOM | Red de Computación</option>
+                                            <option value="REI05-RNER">REI05-RNER | Red de Energía</option>
+                                            <option value="REI06-RSAL">REI06-RSAL | Red de Salud</option>
+                                            <option value="REI07-RDEC">REI07-RDEC | Red de Desarrollo Económico</option>
+                                            <option value="REI08-RIAC">REI08-RIAC | Red de Inteligencia Artificial y Ciencia de Datos</option>
+                                        </optgroup>
+                                        <optgroup label="👥 Redes de Expertos (REX)">
+                                            <option value="REX01-RXTC">REX01-RXTC | Red de Expertos en Telecomunicaciones</option>
+                                            <option value="REX02-RXRM">REX02-RXRM | Red de Expertos en Robótica y Mecatrónica</option>
+                                            <option value="REX03-RXSC">REX03-RXSC | Red de Expertos en Sistemas Complejos</option>
+                                            <option value="REX04-RXAU">REX04-RXAU | Red de Expertos en Innovación Automotriz</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="red1Rol">Rol en la Red <span class="required">*</span></label>
+                                    <select id="red1Rol" name="red1Rol">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Coordinador">Coordinador/a</option>
+                                        <option value="Integrante">Integrante</option>
+                                        <option value="Colaborador">Colaborador/a</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="red1Inicio">Fecha de Inicio <span class="required">*</span></label>
+                                        <input type="date" id="red1Inicio" name="red1Inicio">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="red1Vigente">Estado</label>
+                                        <select id="red1Vigente" name="red1Vigente">
+                                            <option value="Vigente">Vigente</option>
+                                            <option value="Concluido">Concluido</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="red1Constancia">
+                                        Constancia de Participación
+                                    </label>
+                                    <input type="file" id="red1Constancia" name="red1Constancia" 
+                                           accept=".pdf"
+                                           style="padding: 8px;">
+                                    <div class="help-text">
+                                        Adjunte constancia oficial de participación (opcional, PDF máx. 5 MB)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Red 2 (Opcional) -->
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 2px solid #e0e0e0;">
+                                <h4 style="color: #6B1F3D; margin-bottom: 15px;">Red de Investigación 2 (Opcional)</h4>
+                                
+                                <div class="form-group">
+                                    <label for="red2Nombre">Nombre de la Red</label>
+                                    <select id="red2Nombre" name="red2Nombre">
+                                        <option value="">Seleccione una red...</option>
+                                        <optgroup label="🔬 Redes de Investigación (REI)">
+                                            <option value="REI01-REMA">REI01-REMA | Red de Medio Ambiente</option>
+                                            <option value="REI02-RBIO">REI02-RBIO | Red de Biotecnología</option>
+                                            <option value="REI03-RNMN">REI03-RNMN | Red de Nanociencia y Micro-nanotecnología</option>
+                                            <option value="REI04-RCOM">REI04-RCOM | Red de Computación</option>
+                                            <option value="REI05-RNER">REI05-RNER | Red de Energía</option>
+                                            <option value="REI06-RSAL">REI06-RSAL | Red de Salud</option>
+                                            <option value="REI07-RDEC">REI07-RDEC | Red de Desarrollo Económico</option>
+                                            <option value="REI08-RIAC">REI08-RIAC | Red de Inteligencia Artificial y Ciencia de Datos</option>
+                                        </optgroup>
+                                        <optgroup label="👥 Redes de Expertos (REX)">
+                                            <option value="REX01-RXTC">REX01-RXTC | Red de Expertos en Telecomunicaciones</option>
+                                            <option value="REX02-RXRM">REX02-RXRM | Red de Expertos en Robótica y Mecatrónica</option>
+                                            <option value="REX03-RXSC">REX03-RXSC | Red de Expertos en Sistemas Complejos</option>
+                                            <option value="REX04-RXAU">REX04-RXAU | Red de Expertos en Innovación Automotriz</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="red2Rol">Rol en la Red</label>
+                                    <select id="red2Rol" name="red2Rol">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Coordinador">Coordinador/a</option>
+                                        <option value="Integrante">Integrante</option>
+                                        <option value="Colaborador">Colaborador/a</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="red2Inicio">Fecha de Inicio</label>
+                                        <input type="date" id="red2Inicio" name="red2Inicio">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="red2Vigente">Estado</label>
+                                        <select id="red2Vigente" name="red2Vigente">
+                                            <option value="Vigente">Vigente</option>
+                                            <option value="Concluido">Concluido</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="red2Constancia">
+                                        Constancia de Participación
+                                    </label>
+                                    <input type="file" id="red2Constancia" name="red2Constancia" 
+                                           accept=".pdf"
+                                           style="padding: 8px;">
+                                    <div class="help-text">
+                                        Adjunte constancia oficial de participación (opcional, PDF máx. 5 MB)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 7: Líneas de Investigación -->
                 <div class="section">
                     <div class="section-title">
                         <span>🔬</span>
@@ -655,7 +818,7 @@
                     </div>
                 </div>
 
-                <!-- Sección 7: Productividad Académica 2025 -->
+                <!-- Sección 8: Productividad Académica 2025 -->
                 <div class="section">
                     <div class="section-title">
                         <span>📄</span>
@@ -986,6 +1149,37 @@
                 sniiInicio.value = '';
                 sniiFinal.value = '';
                 sniiConstancia.value = '';
+            }
+        }
+
+        function toggleRedes(show) {
+            const redesFields = document.getElementById('redesFields');
+            const red1Nombre = document.getElementById('red1Nombre');
+            const red1Rol = document.getElementById('red1Rol');
+            const red1Inicio = document.getElementById('red1Inicio');
+            
+            if (show) {
+                redesFields.classList.add('active');
+                red1Nombre.required = true;
+                red1Rol.required = true;
+                red1Inicio.required = true;
+            } else {
+                redesFields.classList.remove('active');
+                red1Nombre.required = false;
+                red1Rol.required = false;
+                red1Inicio.required = false;
+                // Limpiar campos
+                red1Nombre.value = '';
+                red1Rol.value = '';
+                red1Inicio.value = '';
+                document.getElementById('red1Vigente').value = 'Vigente';
+                document.getElementById('red1Constancia').value = '';
+                // Red 2
+                document.getElementById('red2Nombre').value = '';
+                document.getElementById('red2Rol').value = '';
+                document.getElementById('red2Inicio').value = '';
+                document.getElementById('red2Vigente').value = 'Vigente';
+                document.getElementById('red2Constancia').value = '';
             }
         }
 
