@@ -996,7 +996,7 @@
                 <div class="form-group">
                     <label>Tipo de Financiamiento <span class="required">*</span></label>
                     <select id="financiamiento_${proyectoCount}" name="proyectos[${proyectoCount}][financiamiento]" 
-                            onchange="toggleFuenteExterna(${proyectoCount})" required>
+                            onchange="toggleTipoFinanciamiento(${proyectoCount})" required>
                         <option value="">Seleccione...</option>
                         <option value="Interno IPN">Financiamiento Interno IPN</option>
                         <option value="Externo">Financiamiento Externo</option>
@@ -1006,45 +1006,71 @@
                     </div>
                 </div>
 
-                <div class="conditional-field" id="fuenteExterna_${proyectoCount}" style="margin-left: 0; padding: 15px; background: #fff3cd; border-radius: 8px; display: none; margin-bottom: 15px;">
-                    <label>Fuente de Financiamiento Externo <span class="required">*</span></label>
-                    <select id="fuenteExterna_select_${proyectoCount}" name="proyectos[${proyectoCount}][fuenteExterna]">
-                        <option value="">Seleccione la fuente...</option>
-                        <option value="SECIHTI">SECIHTI (Secretaría de Ciencia, Humanidades, Tecnología e Innovación)</option>
-                        <option value="SECTEI">SECTEI (Secretaría de Ciencia, Tecnología e Innovación CDMX)</option>
-                        <option value="European Commission">European Commission (Comisión Europea)</option>
-                        <option value="Wellcome Foundation">Wellcome Foundation (Fundación Wellcome)</option>
-                        <option value="SAM.GOV">SAM.GOV (Subvenciones Federales EE.UU.)</option>
-                        <option value="GCRF">GCRF (Global Challenges Research Fund)</option>
-                        <option value="NIH">NIH (National Institutes of Health)</option>
-                        <option value="Otra fuente internacional">Otra fuente internacional</option>
-                        <option value="Empresa privada">Empresa privada</option>
-                        <option value="ONG/Fundación">ONG/Fundación</option>
-                    </select>
-                    <div class="help-text">
-                        Para más información: <a href="https://www.ipn.mx/investigacion/convocatorias/externos.html" target="_blank" style="color: #856404; font-weight: 600;">Proyectos Externos IPN</a>
+                <!-- Campos para Financiamiento INTERNO -->
+                <div id="camposInterno_${proyectoCount}" style="display: none;">
+                    <div class="form-group">
+                        <label>Categoría <span class="required">*</span></label>
+                        <select id="categoria_${proyectoCount}" name="proyectos[${proyectoCount}][categoria]" 
+                                onchange="actualizarTiposProyecto(${proyectoCount})">
+                            <option value="">Seleccione categoría...</option>
+                            <option value="Iniciación">Iniciación en la investigación</option>
+                            <option value="Colaborativos">Grupos colaborativos</option>
+                            <option value="Innovación">Innovación y maduración tecnológica</option>
+                            <option value="Estratégicos">Proyectos estratégicos</option>
+                            <option value="Consorcios">Consorcios</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo <span class="required">*</span></label>
+                        <select id="tipo_${proyectoCount}" name="proyectos[${proyectoCount}][tipo]">
+                            <option value="">Primero seleccione categoría...</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Categoría <span class="required">*</span></label>
-                    <select id="categoria_${proyectoCount}" name="proyectos[${proyectoCount}][categoria]" 
-                            onchange="actualizarTiposProyecto(${proyectoCount})" required>
-                        <option value="">Seleccione categoría...</option>
-                        <option value="Iniciación">Iniciación en la investigación</option>
-                        <option value="Colaborativos">Grupos colaborativos</option>
-                        <option value="Innovación">Innovación y maduración tecnológica</option>
-                        <option value="Estratégicos">Proyectos estratégicos</option>
-                        <option value="Consorcios">Consorcios</option>
-                        <option value="Externos">Externos al IPN</option>
-                    </select>
-                </div>
+                <!-- Campos para Financiamiento EXTERNO -->
+                <div id="camposExterno_${proyectoCount}" style="display: none;">
+                    <div class="conditional-field" style="margin-left: 0; padding: 15px; background: #fff3cd; border-radius: 8px; margin-bottom: 15px;">
+                        <div class="form-group">
+                            <label>Fuente de Financiamiento Externo <span class="required">*</span></label>
+                            <select id="fuenteExterna_select_${proyectoCount}" name="proyectos[${proyectoCount}][fuenteExterna]">
+                                <option value="">Seleccione la fuente...</option>
+                                <option value="SECIHTI">SECIHTI (Secretaría de Ciencia, Humanidades, Tecnología e Innovación)</option>
+                                <option value="SECTEI">SECTEI (Secretaría de Ciencia, Tecnología e Innovación CDMX)</option>
+                                <option value="European Commission">European Commission (Comisión Europea)</option>
+                                <option value="Wellcome Foundation">Wellcome Foundation (Fundación Wellcome)</option>
+                                <option value="SAM.GOV">SAM.GOV (Subvenciones Federales EE.UU.)</option>
+                                <option value="GCRF">GCRF (Global Challenges Research Fund)</option>
+                                <option value="NIH">NIH (National Institutes of Health)</option>
+                                <option value="Otra fuente internacional">Otra fuente internacional</option>
+                                <option value="Empresa privada">Empresa privada</option>
+                                <option value="ONG/Fundación">ONG/Fundación</option>
+                            </select>
+                            <div class="help-text">
+                                Para más información: <a href="https://www.ipn.mx/investigacion/convocatorias/externos.html" target="_blank" style="color: #856404; font-weight: 600;">Proyectos Externos IPN</a>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label>Tipo <span class="required">*</span></label>
-                    <select id="tipo_${proyectoCount}" name="proyectos[${proyectoCount}][tipo]" required>
-                        <option value="">Primero seleccione categoría...</option>
-                    </select>
+                        <div class="form-group">
+                            <label>Tipo/Programa del Proyecto <span class="required">*</span></label>
+                            <input type="text" id="tipoExterno_${proyectoCount}" name="proyectos[${proyectoCount}][tipoExterno]" 
+                                   placeholder="Ej: Ciencia Frontera, Investigación Básica, etc.">
+                            <div class="help-text">
+                                Especifique el tipo o programa (ej: Ciencia Frontera, PRONACES, Proyecto de Innovación, etc.)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descripción del Proyecto <span class="required">*</span></label>
+                            <textarea id="descripcionExterno_${proyectoCount}" name="proyectos[${proyectoCount}][descripcionExterno]" 
+                                      placeholder="Breve descripción del proyecto externo..." 
+                                      rows="3"></textarea>
+                            <div class="help-text">
+                                Describa brevemente el proyecto y sus objetivos principales
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -1086,18 +1112,55 @@
             proyectoCount--;
         }
 
-        function toggleFuenteExterna(proyectoId) {
+        function toggleTipoFinanciamiento(proyectoId) {
             const financiamiento = document.getElementById(`financiamiento_${proyectoId}`).value;
-            const fuenteExternaDiv = document.getElementById(`fuenteExterna_${proyectoId}`);
-            const fuenteExternaSelect = document.getElementById(`fuenteExterna_select_${proyectoId}`);
+            const camposInterno = document.getElementById(`camposInterno_${proyectoId}`);
+            const camposExterno = document.getElementById(`camposExterno_${proyectoId}`);
             
-            if (financiamiento === 'Externo') {
-                fuenteExternaDiv.style.display = 'block';
-                fuenteExternaSelect.required = true;
+            // Elementos de campos internos
+            const categoria = document.getElementById(`categoria_${proyectoId}`);
+            const tipo = document.getElementById(`tipo_${proyectoId}`);
+            
+            // Elementos de campos externos
+            const fuenteExterna = document.getElementById(`fuenteExterna_select_${proyectoId}`);
+            const tipoExterno = document.getElementById(`tipoExterno_${proyectoId}`);
+            const descripcionExterno = document.getElementById(`descripcionExterno_${proyectoId}`);
+            
+            if (financiamiento === 'Interno IPN') {
+                // Mostrar campos internos, ocultar externos
+                camposInterno.style.display = 'block';
+                camposExterno.style.display = 'none';
+                
+                categoria.required = true;
+                tipo.required = true;
+                fuenteExterna.required = false;
+                tipoExterno.required = false;
+                descripcionExterno.required = false;
+                
+                // Limpiar campos externos
+                fuenteExterna.value = '';
+                tipoExterno.value = '';
+                descripcionExterno.value = '';
+                
+            } else if (financiamiento === 'Externo') {
+                // Mostrar campos externos, ocultar internos
+                camposInterno.style.display = 'none';
+                camposExterno.style.display = 'block';
+                
+                categoria.required = false;
+                tipo.required = false;
+                fuenteExterna.required = true;
+                tipoExterno.required = true;
+                descripcionExterno.required = true;
+                
+                // Limpiar campos internos
+                categoria.value = '';
+                tipo.value = '';
+                
             } else {
-                fuenteExternaDiv.style.display = 'none';
-                fuenteExternaSelect.required = false;
-                fuenteExternaSelect.value = '';
+                // No ha seleccionado nada
+                camposInterno.style.display = 'none';
+                camposExterno.style.display = 'none';
             }
         }
 
@@ -1151,16 +1214,6 @@
                     'IPN - UAM INNOVA METRO - POLITEC',
                     'Otro Consorcio Nacional',
                     'Consorcio Internacional'
-                ],
-                'Externos': [
-                    'SECIHTI - Ciencia Frontera',
-                    'SECIHTI - Investigación Científica Básica',
-                    'SECIHTI - PRONACES',
-                    'SECIHTI - Otros',
-                    'SENER',
-                    'Fundaciones',
-                    'Empresa privada',
-                    'Otro externo'
                 ]
             };
             
@@ -1325,27 +1378,42 @@
             proyectosElements.forEach(proyectoDiv => {
                 const id = proyectoDiv.id.split('_')[1];
                 const financiamiento = formData.get(`proyectos[${id}][financiamiento]`);
-                const fuenteExterna = formData.get(`proyectos[${id}][fuenteExterna]`);
-                const categoria = document.getElementById(`categoria_${id}`)?.value;
-                const tipo = document.getElementById(`tipo_${id}`)?.value;
                 const claveSIP = formData.get(`proyectos[${id}][claveSIP]`);
                 const nombre = formData.get(`proyectos[${id}][nombre]`);
                 
-                if (financiamiento && categoria && tipo && claveSIP && nombre) {
-                    const proyecto = {
-                        financiamiento: financiamiento,
-                        categoria: categoria,
-                        tipo: tipo,
-                        claveSIP: claveSIP,
-                        nombre: nombre
-                    };
+                if (!financiamiento || !claveSIP || !nombre) {
+                    return; // Saltar si faltan datos básicos
+                }
+                
+                const proyecto = {
+                    financiamiento: financiamiento,
+                    claveSIP: claveSIP,
+                    nombre: nombre
+                };
+                
+                if (financiamiento === 'Interno IPN') {
+                    // Proyectos internos: usar categoría y tipo
+                    const categoria = document.getElementById(`categoria_${id}`)?.value;
+                    const tipo = document.getElementById(`tipo_${id}`)?.value;
                     
-                    // Agregar fuente externa si aplica
-                    if (financiamiento === 'Externo' && fuenteExterna) {
-                        proyecto.fuenteExterna = fuenteExterna;
+                    if (categoria && tipo) {
+                        proyecto.categoria = categoria;
+                        proyecto.tipo = tipo;
+                        data.proyectosVigentes.push(proyecto);
                     }
                     
-                    data.proyectosVigentes.push(proyecto);
+                } else if (financiamiento === 'Externo') {
+                    // Proyectos externos: usar fuente, tipo y descripción
+                    const fuenteExterna = formData.get(`proyectos[${id}][fuenteExterna]`);
+                    const tipoExterno = formData.get(`proyectos[${id}][tipoExterno]`);
+                    const descripcionExterno = formData.get(`proyectos[${id}][descripcionExterno]`);
+                    
+                    if (fuenteExterna && tipoExterno && descripcionExterno) {
+                        proyecto.fuenteExterna = fuenteExterna;
+                        proyecto.tipoExterno = tipoExterno;
+                        proyecto.descripcionExterno = descripcionExterno;
+                        data.proyectosVigentes.push(proyecto);
+                    }
                 }
             });
 
