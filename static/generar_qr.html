@@ -146,7 +146,7 @@
 <body>
     <div class="container">
         <h1>🎓 Generador de QR</h1>
-        <div class="subtitle">Formulario de Investigadores - UPIIZ</div>
+        <div class="subtitle">Padrón de Investigadores - UPIIZ</div>
 
         <div class="alert">
             ⚠️ Ingresa tu dirección IP local (Ej: 192.168.0.4)
@@ -251,7 +251,7 @@
                 titleDiv.style.fontSize = '1.1rem';
                 titleDiv.style.fontWeight = '600';
                 titleDiv.style.color = '#6B1F3D';
-                titleDiv.textContent = 'Formulario de Investigadores UPIIZ';
+                titleDiv.textContent = 'Padrón de Investigadores UPIIZ';
                 qrContainer.appendChild(titleDiv);
 
                 const urlDiv = document.createElement('div');
@@ -287,7 +287,7 @@
             ctx.fillStyle = '#6B1F3D';
             ctx.font = 'bold 20px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText('Formulario de Investigadores', canvas.width / 2, 30);
+            ctx.fillText('Padrón de Investigadores', canvas.width / 2, 30);
             
             // UPIIZ
             ctx.font = '16px Arial';
@@ -338,7 +338,7 @@
             printWindow.document.write('.footer { margin-top: 30px; color: #666; font-size: 14px; }');
             printWindow.document.write('</style>');
             printWindow.document.write('</head><body>');
-            printWindow.document.write('<h1>🎓 Formulario de Investigadores</h1>');
+            printWindow.document.write('<h1>🎓 Padrón de Investigadores UPIIZ</h1>');
             printWindow.document.write('<h2>UPIIZ - Instituto Politécnico Nacional</h2>');
             printWindow.document.write(qrContainer.innerHTML);
             printWindow.document.write('<div class="footer">');
