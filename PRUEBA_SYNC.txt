@@ -1,5 +1,0 @@
-Prueba de sincronización Git
-Computadora: Local
-Fecha: 2025-10-12
-Todo funciona correctamente ✓
-
