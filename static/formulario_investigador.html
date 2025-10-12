@@ -1014,6 +1014,30 @@
                     </select>
                 </div>
 
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Clave SIP <span class="required">*</span></label>
+                        <input type="text" name="proyectos[${proyectoCount}][claveSIP]" 
+                               placeholder="Ej: SIP-20250123" required
+                               style="text-transform: uppercase;">
+                        <div class="help-text">
+                            Clave del Sistema de Administración de Proyectos
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Financiamiento Interno IPN</label>
+                        <select name="proyectos[${proyectoCount}][financiamientoInterno]">
+                            <option value="Sí">Sí</option>
+                            <option value="No">No</option>
+                            <option value="Parcial">Parcial</option>
+                        </select>
+                        <div class="help-text">
+                            Indica si recibe financiamiento del IPN
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>Nombre del Proyecto <span class="required">*</span></label>
                     <input type="text" name="proyectos[${proyectoCount}][nombre]" 
@@ -1261,12 +1285,16 @@
                 const id = proyectoDiv.id.split('_')[1];
                 const categoria = document.getElementById(`categoria_${id}`)?.value;
                 const tipo = document.getElementById(`tipo_${id}`)?.value;
+                const claveSIP = formData.get(`proyectos[${id}][claveSIP]`);
+                const financiamientoInterno = formData.get(`proyectos[${id}][financiamientoInterno]`);
                 const nombre = formData.get(`proyectos[${id}][nombre]`);
                 
-                if (categoria && tipo && nombre) {
+                if (categoria && tipo && claveSIP && nombre) {
                     data.proyectosVigentes.push({
                         categoria: categoria,
                         tipo: tipo,
+                        claveSIP: claveSIP,
+                        financiamientoInterno: financiamientoInterno,
                         nombre: nombre
                     });
                 }
