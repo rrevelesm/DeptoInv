@@ -994,6 +994,18 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Tipo de Financiamiento <span class="required">*</span></label>
+                    <select id="financiamiento_${proyectoCount}" name="proyectos[${proyectoCount}][financiamiento]" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Interno IPN">Financiamiento Interno IPN</option>
+                        <option value="Externo">Financiamiento Externo</option>
+                    </select>
+                    <div class="help-text">
+                        Seleccione la fuente principal de financiamiento del proyecto
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label>Categoría <span class="required">*</span></label>
                     <select id="categoria_${proyectoCount}" name="proyectos[${proyectoCount}][categoria]" 
                             onchange="actualizarTiposProyecto(${proyectoCount})" required>
@@ -1014,27 +1026,13 @@
                     </select>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Clave SIP <span class="required">*</span></label>
-                        <input type="text" name="proyectos[${proyectoCount}][claveSIP]" 
-                               placeholder="Ej: SIP-20250123" required
-                               style="text-transform: uppercase;">
-                        <div class="help-text">
-                            Clave del Sistema de Administración de Proyectos
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Financiamiento Interno IPN</label>
-                        <select name="proyectos[${proyectoCount}][financiamientoInterno]">
-                            <option value="Sí">Sí</option>
-                            <option value="No">No</option>
-                            <option value="Parcial">Parcial</option>
-                        </select>
-                        <div class="help-text">
-                            Indica si recibe financiamiento del IPN
-                        </div>
+                <div class="form-group">
+                    <label>Clave SIP <span class="required">*</span></label>
+                    <input type="text" id="claveSIP_${proyectoCount}" name="proyectos[${proyectoCount}][claveSIP]" 
+                           placeholder="Ej: SIP-20250123" required
+                           style="text-transform: uppercase;">
+                    <div class="help-text">
+                        Clave del Sistema de Administración de Proyectos (SAPPI)
                     </div>
                 </div>
 
@@ -1283,18 +1281,18 @@
             
             proyectosElements.forEach(proyectoDiv => {
                 const id = proyectoDiv.id.split('_')[1];
+                const financiamiento = formData.get(`proyectos[${id}][financiamiento]`);
                 const categoria = document.getElementById(`categoria_${id}`)?.value;
                 const tipo = document.getElementById(`tipo_${id}`)?.value;
                 const claveSIP = formData.get(`proyectos[${id}][claveSIP]`);
-                const financiamientoInterno = formData.get(`proyectos[${id}][financiamientoInterno]`);
                 const nombre = formData.get(`proyectos[${id}][nombre]`);
                 
-                if (categoria && tipo && claveSIP && nombre) {
+                if (financiamiento && categoria && tipo && claveSIP && nombre) {
                     data.proyectosVigentes.push({
+                        financiamiento: financiamiento,
                         categoria: categoria,
                         tipo: tipo,
                         claveSIP: claveSIP,
-                        financiamientoInterno: financiamientoInterno,
                         nombre: nombre
                     });
                 }
