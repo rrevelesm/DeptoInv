@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Investigación | IPN</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Sistema de Gestión de Investigación • IPN</h1>
+            <p style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 10px;">UPIIZ - Instituto Politécnico Nacional - Departamento de Investigación</p>
+            <div style="margin-bottom: 15px;">
+                <a href="/panel-formularios" target="_blank" 
+                   style="background: #D4AF37; color: #6B1F3D; padding: 10px 20px; text-decoration: none; 
+                          border-radius: 5px; font-weight: 600; display: inline-block;">
+                    📋 Ver Formularios Recibidos
+                </a>
+            </div>
+            <div class="stats-bar" id="statsBar">
+                <div class="stat-item">
+                    <span class="stat-label">Investigadores:</span>
+                    <span class="stat-value" id="totalInvestigadores">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Proyectos:</span>
+                    <span class="stat-value" id="totalProyectos">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Publicaciones:</span>
+                    <span class="stat-value" id="totalPublicaciones">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">SNII Vigentes:</span>
+                    <span class="stat-value" id="sniiVigentes">0</span>
+                </div>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-button active" onclick="showTab('investigadores')">
+                👤 INVESTIGADORES
+            </button>
+            <button class="tab-button" onclick="showTab('proyectos')">
+                📊 PROYECTOS
+            </button>
+            <button class="tab-button" onclick="showTab('publicaciones')">
+                📚 PUBLICACIONES
+            </button>
+            <button class="tab-button" onclick="showTab('snii')">
+                🏆 SNII
+            </button>
+        </nav>
+
+        <!-- Tab: Investigadores -->
+        <div id="investigadores" class="tab-content active">
+            <div class="section-header">
+                <h2>Investigadores</h2>
+                <div class="actions">
+                    <input type="text" id="searchInvestigadores" placeholder="🔍 Buscar investigador..." class="search-input">
+                    <button class="btn btn-primary" onclick="showModal('investigadorModal')">
+                        ➕ Nuevo Investigador
+                    </button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre Completo</th>
+                            <th>Email</th>
+                            <th>Especialidad</th>
+                            <th>Grado Académico</th>
+                            <th>Estatus</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="investigadoresTableBody">
+                        <!-- Datos cargados dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Proyectos -->
+        <div id="proyectos" class="tab-content">
+            <div class="section-header">
+                <h2>Proyectos de Investigación</h2>
+                <div class="actions">
+                    <input type="text" id="searchProyectos" placeholder="🔍 Buscar proyecto..." class="search-input">
+                    <button class="btn btn-primary" onclick="showModal('proyectoModal')">
+                        ➕ Nuevo Proyecto
+                    </button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Clave SIP</th>
+                            <th>Título</th>
+                            <th>Responsable</th>
+                            <th>Tipo</th>
+                            <th>Financiamiento</th>
+                            <th>Monto</th>
+                            <th>Fecha Inicio</th>
+                            <th>Estatus</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="proyectosTableBody">
+                        <!-- Datos cargados dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Publicaciones -->
+        <div id="publicaciones" class="tab-content">
+            <div class="section-header">
+                <h2>Publicaciones</h2>
+                <div class="actions">
+                    <input type="text" id="searchPublicaciones" placeholder="🔍 Buscar publicación..." class="search-input">
+                    <button class="btn btn-primary" onclick="showModal('publicacionModal')">
+                        ➕ Nueva Publicación
+                    </button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Tipo</th>
+                            <th>Revista/Editorial</th>
+                            <th>Año</th>
+                            <th>Indexada</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="publicacionesTableBody">
+                        <!-- Datos cargados dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: SNII -->
+        <div id="snii" class="tab-content">
+            <div class="section-header">
+                <h2>Sistema Nacional de Investigadores</h2>
+                <div class="actions">
+                    <input type="text" id="searchSNII" placeholder="🔍 Buscar..." class="search-input">
+                    <button class="btn btn-primary" onclick="showModal('sniiModal')">
+                        ➕ Nuevo Registro SNII
+                    </button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Investigador</th>
+                            <th>Nivel</th>
+                            <th>Área</th>
+                            <th>Fecha Ingreso</th>
+                            <th>Vigencia</th>
+                            <th>Estatus</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sniiTableBody">
+                        <!-- Datos cargados dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Investigador -->
+    <div id="investigadorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="investigadorModalTitle">Nuevo Investigador</h3>
+                <span class="close" onclick="closeModal('investigadorModal')">&times;</span>
+            </div>
+            <form id="investigadorForm" onsubmit="submitInvestigador(event)">
+                <input type="hidden" id="investigadorId">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombre">Nombre *</label>
+                        <input type="text" id="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidoPaterno">Apellido Paterno *</label>
+                        <input type="text" id="apellidoPaterno" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="apellidoMaterno">Apellido Materno</label>
+                        <input type="text" id="apellidoMaterno">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono">
+                    </div>
+                    <div class="form-group">
+                        <label for="gradoAcademico">Grado Académico</label>
+                        <select id="gradoAcademico">
+                            <option value="">Seleccionar...</option>
+                            <option value="Licenciatura">Licenciatura</option>
+                            <option value="Maestría">Maestría</option>
+                            <option value="Doctorado">Doctorado</option>
+                            <option value="Postdoctorado">Postdoctorado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="especialidad">Especialidad</label>
+                    <input type="text" id="especialidad">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="institucion">Institución</label>
+                        <input type="text" id="institucion">
+                    </div>
+                    <div class="form-group">
+                        <label for="departamento">Departamento</label>
+                        <input type="text" id="departamento">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fechaIngreso">Fecha de Ingreso</label>
+                        <input type="date" id="fechaIngreso">
+                    </div>
+                    <div class="form-group">
+                        <label for="estatus">Estatus</label>
+                        <select id="estatus">
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                            <option value="Jubilado">Jubilado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('investigadorModal')">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Proyecto -->
+    <div id="proyectoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="proyectoModalTitle">Nuevo Proyecto</h3>
+                <span class="close" onclick="closeModal('proyectoModal')">&times;</span>
+            </div>
+            <form id="proyectoForm" onsubmit="submitProyecto(event)">
+                <input type="hidden" id="proyectoId">
+                
+                <div class="form-group">
+                    <label for="proyectoClaveSip">Clave SIP</label>
+                    <input type="text" id="proyectoClaveSip" placeholder="Ej: SIP-2025-001">
+                </div>
+
+                <div class="form-group">
+                    <label for="proyectoTitulo">Título *</label>
+                    <input type="text" id="proyectoTitulo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="proyectoDescripcion">Descripción</label>
+                    <textarea id="proyectoDescripcion" rows="3"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="proyectoTipo">Tipo</label>
+                        <select id="proyectoTipo">
+                            <option value="">Seleccionar...</option>
+                            <option value="Investigación">Investigación</option>
+                            <option value="Desarrollo">Desarrollo</option>
+                            <option value="Innovación">Innovación</option>
+                            <option value="Mixto">Mixto</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="proyectoEstatus">Estatus</label>
+                        <select id="proyectoEstatus">
+                            <option value="Planeado">Planeado</option>
+                            <option value="En curso">En curso</option>
+                            <option value="Finalizado">Finalizado</option>
+                            <option value="Cancelado">Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="proyectoFinanciamiento">Fuente de Financiamiento</label>
+                        <input type="text" id="proyectoFinanciamiento">
+                    </div>
+                    <div class="form-group">
+                        <label for="proyectoMonto">Monto ($)</label>
+                        <input type="number" id="proyectoMonto" step="0.01">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="proyectoFechaInicio">Fecha de Inicio</label>
+                        <input type="date" id="proyectoFechaInicio">
+                    </div>
+                    <div class="form-group">
+                        <label for="proyectoFechaFin">Fecha de Fin</label>
+                        <input type="date" id="proyectoFechaFin">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('proyectoModal')">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Publicación -->
+    <div id="publicacionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="publicacionModalTitle">Nueva Publicación</h3>
+                <span class="close" onclick="closeModal('publicacionModal')">&times;</span>
+            </div>
+            <form id="publicacionForm" onsubmit="submitPublicacion(event)">
+                <input type="hidden" id="publicacionId">
+                
+                <div class="form-group">
+                    <label for="publicacionTitulo">Título *</label>
+                    <input type="text" id="publicacionTitulo" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="publicacionTipo">Tipo</label>
+                        <select id="publicacionTipo">
+                            <option value="">Seleccionar...</option>
+                            <option value="Artículo">Artículo</option>
+                            <option value="Libro">Libro</option>
+                            <option value="Capítulo">Capítulo de Libro</option>
+                            <option value="Conferencia">Conferencia</option>
+                            <option value="Tesis">Tesis</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="publicacionAnio">Año</label>
+                        <input type="number" id="publicacionAnio" min="1900" max="2100">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="publicacionRevista">Revista/Editorial</label>
+                        <input type="text" id="publicacionRevista">
+                    </div>
+                    <div class="form-group">
+                        <label for="publicacionIndexada">Indexada en</label>
+                        <input type="text" id="publicacionIndexada" placeholder="ej: WoS, Scopus">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="publicacionVolumen">Volumen</label>
+                        <input type="text" id="publicacionVolumen">
+                    </div>
+                    <div class="form-group">
+                        <label for="publicacionPaginas">Páginas</label>
+                        <input type="text" id="publicacionPaginas">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="publicacionDOI">DOI</label>
+                        <input type="text" id="publicacionDOI">
+                    </div>
+                    <div class="form-group">
+                        <label for="publicacionISSN">ISSN/ISBN</label>
+                        <input type="text" id="publicacionISSN">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="publicacionURL">URL</label>
+                    <input type="url" id="publicacionURL">
+                </div>
+
+                <div class="form-group">
+                    <label for="publicacionResumen">Resumen</label>
+                    <textarea id="publicacionResumen" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="publicacionPalabras">Palabras Clave</label>
+                    <input type="text" id="publicacionPalabras" placeholder="Separadas por comas">
+                </div>
+
+                <div class="form-group">
+                    <label for="publicacionFactorImpacto">Factor de Impacto</label>
+                    <input type="number" id="publicacionFactorImpacto" step="0.001">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('publicacionModal')">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: SNII -->
+    <div id="sniiModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="sniiModalTitle">Nuevo Registro SNII</h3>
+                <span class="close" onclick="closeModal('sniiModal')">&times;</span>
+            </div>
+            <form id="sniiForm" onsubmit="submitSNII(event)">
+                <input type="hidden" id="sniiId">
+                
+                <div class="form-group">
+                    <label for="sniiInvestigador">Investigador *</label>
+                    <select id="sniiInvestigador" required>
+                        <option value="">Seleccionar investigador...</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sniiNivel">Nivel *</label>
+                        <select id="sniiNivel" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="Candidato">Candidato</option>
+                            <option value="Nivel I">Nivel I</option>
+                            <option value="Nivel II">Nivel II</option>
+                            <option value="Nivel III">Nivel III</option>
+                            <option value="Emérito">Emérito</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sniiEstatus">Estatus</label>
+                        <select id="sniiEstatus">
+                            <option value="Vigente">Vigente</option>
+                            <option value="Vencido">Vencido</option>
+                            <option value="En evaluación">En evaluación</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sniiFechaIngreso">Fecha de Ingreso</label>
+                        <input type="date" id="sniiFechaIngreso">
+                    </div>
+                    <div class="form-group">
+                        <label for="sniiFechaVigencia">Fecha de Vigencia</label>
+                        <input type="date" id="sniiFechaVigencia">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sniiNumeroRegistro">Número de Registro</label>
+                    <input type="text" id="sniiNumeroRegistro">
+                </div>
+
+                <div class="form-group">
+                    <label for="sniiArea">Área de Conocimiento</label>
+                    <input type="text" id="sniiArea">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('sniiModal')">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 20px; margin-top: 40px; background: linear-gradient(to right, #6B1F3D, #4A1629); color: white; border-top: 3px solid #D4AF37;">
+        <p style="margin: 0; font-size: 0.9rem;">
+            <strong>Instituto Politécnico Nacional</strong> - Sistema de Gestión de Investigación
+        </p>
+        <p style="margin: 5px 0 0 0; font-size: 0.8rem; opacity: 0.9;">
+            La Técnica al Servicio de la Patria | © 2025
+        </p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

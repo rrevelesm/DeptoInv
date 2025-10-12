@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro - Investigadores IPN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6B1F3D 0%, #8B2F4D 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .form-content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #6B1F3D;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #D4AF37;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="url"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #6B1F3D;
+            box-shadow: 0 0 0 3px rgba(107, 31, 61, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-label,
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .conditional-field {
+            margin-left: 30px;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .conditional-field.active {
+            display: block;
+        }
+
+        .line-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .line-item input {
+            flex: 1;
+        }
+
+        .btn-add {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-remove {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #6B1F3D 0%, #8B2F4D 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(107, 31, 61, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 31, 61, 0.4);
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-content {
+                padding: 20px;
+            }
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Formulario de Registro de Investigadores</h1>
+            <p style="font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;">
+                Unidad Profesional Interdisciplinaria de Ingeniería<br>
+                Campus Zacatecas - UPIIZ
+            </p>
+            <p style="font-size: 0.95rem;">Instituto Politécnico Nacional</p>
+            <p style="font-size: 0.85rem; margin-top: 10px; opacity: 0.95;">
+                <strong>Jefe del Departamento de Investigación:</strong><br>
+                M. en C. Rafael Reveles Martínez
+            </p>
+            <p style="font-size: 0.85rem; margin-top: 8px;">
+                <a href="https://www.zacatecas.ipn.mx/" target="_blank" 
+                   style="color: #D4AF37; text-decoration: none; font-weight: 600;">
+                    🌐 www.zacatecas.ipn.mx
+                </a>
+            </p>
+        </div>
+
+        <div class="form-content">
+            <div class="success-message" id="successMessage">
+                ✓ Formulario enviado exitosamente. Gracias por su participación.
+            </div>
+            <div class="error-message" id="errorMessage">
+                ✗ Error al enviar el formulario. Por favor, intente nuevamente.
+            </div>
+
+            <form id="investigadorForm">
+                <!-- Sección 1: Datos Personales -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>👤</span>
+                        <span>Datos Personales</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombreCompleto">Nombre Completo <span class="required">*</span></label>
+                        <input type="text" id="nombreCompleto" name="nombreCompleto" required 
+                               placeholder="Nombre(s) Apellido Paterno Apellido Materno">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="curp">CURP <span class="required">*</span></label>
+                            <input type="text" id="curp" name="curp" required 
+                                   placeholder="18 caracteres"
+                                   maxlength="18"
+                                   pattern="[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9A-Z][0-9]"
+                                   style="text-transform: uppercase;">
+                            <div class="help-text">
+                                Clave Única de Registro de Población (18 caracteres)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fechaNacimiento">Fecha de Nacimiento <span class="required">*</span></label>
+                            <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Género <span class="required">*</span></label>
+                            <select id="genero" name="genero" required>
+                                <option value="">Seleccione...</option>
+                                <option value="Femenino">Femenino</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Otro">Otro</option>
+                                <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="claveEmpleado">Clave de Empleado <span class="required">*</span></label>
+                            <input type="text" id="claveEmpleado" name="claveEmpleado" required 
+                                   placeholder="Ej: 12345">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoria">Categoría <span class="required">*</span></label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">Seleccione...</option>
+                            <option value="Profesor Titular A">Profesor Titular A</option>
+                            <option value="Profesor Titular B">Profesor Titular B</option>
+                            <option value="Profesor Titular C">Profesor Titular C</option>
+                            <option value="Profesor Asociado A">Profesor Asociado A</option>
+                            <option value="Profesor Asociado B">Profesor Asociado B</option>
+                            <option value="Profesor Asociado C">Profesor Asociado C</option>
+                            <option value="Profesor Asistente A">Profesor Asistente A</option>
+                            <option value="Profesor Asistente B">Profesor Asistente B</option>
+                            <option value="Profesor Asistente C">Profesor Asistente C</option>
+                            <option value="Técnico Académico Titular A">Técnico Académico Titular A</option>
+                            <option value="Técnico Académico Titular B">Técnico Académico Titular B</option>
+                            <option value="Técnico Académico Titular C">Técnico Académico Titular C</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correoInstitucional">Correo Electrónico Institucional <span class="required">*</span></label>
+                        <input type="email" id="correoInstitucional" name="correoInstitucional" required 
+                               placeholder="ejemplo@ipn.mx">
+                        <div class="help-text">
+                            Ingrese su correo institucional del IPN
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>En caso de ser necesario, ¿le gustaría ser contactado por teléfono celular? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="aceptaContacto" value="Si" onclick="toggleTelefono(true)" required>
+                                <span>Sí, acepto ser contactado</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="aceptaContacto" value="No" onclick="toggleTelefono(false)" required>
+                                <span>No deseo ser contactado</span>
+                            </label>
+                        </div>
+
+                        <div class="conditional-field" id="telefonoFields">
+                            <label for="telefonoCelular">Número de Teléfono Celular <span class="required">*</span></label>
+                            <input type="tel" id="telefonoCelular" name="telefonoCelular" 
+                                   placeholder="10 dígitos (Ej: 5512345678)"
+                                   pattern="[0-9]{10}"
+                                   maxlength="10">
+                            <div class="help-text">
+                                Ingrese su número celular a 10 dígitos (sin espacios ni guiones)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 2: Proyecto Vigente -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>📊</span>
+                        <span>Proyecto de Investigación Vigente</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Cuenta actualmente con proyecto(s) de investigación vigente(s)? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="tieneProyectoVigente" value="Si" onclick="toggleProyectoVigente(true)" required>
+                                <span>Sí</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="tieneProyectoVigente" value="No" onclick="toggleProyectoVigente(false)" required>
+                                <span>No</span>
+                            </label>
+                        </div>
+
+                        <div class="conditional-field" id="proyectoVigenteFields">
+                            <div class="help-text" style="margin-bottom: 15px; padding: 12px; background: #fff3cd; border-radius: 8px; border-left: 4px solid #D4AF37;">
+                                <strong>📌 Importante:</strong> Puede tener proyectos de <strong>diferentes categorías</strong> 
+                                (ej: uno de Iniciación + uno de Innovación), pero <strong>solo UN proyecto por categoría</strong>.<br>
+                                <strong>💡 Consulte sus proyectos en:</strong> 
+                                <a href="https://sappi.ipn.mx/" target="_blank" style="color: #6B1F3D; font-weight: 600;">
+                                    SAPPI - Sistema de Administración de Proyectos
+                                </a>
+                            </div>
+
+                            <div id="proyectosListaContainer">
+                                <!-- Proyectos se agregan dinámicamente aquí -->
+                            </div>
+
+                            <button type="button" class="btn-add" onclick="agregarProyecto()">
+                                ➕ Agregar Proyecto
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 3: Beca EDI -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>💰</span>
+                        <span>Beca EDI (Estímulo al Desempeño de los Investigadores)</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Cuenta con Beca EDI? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="cuentaBecaEDI" value="Si" onclick="toggleEDI(true)" required>
+                                <span>Sí</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="cuentaBecaEDI" value="No" onclick="toggleEDI(false)" required>
+                                <span>No</span>
+                            </label>
+                        </div>
+
+                        <div class="conditional-field" id="ediFields">
+                            <label for="nivelEDI">Nivel EDI <span class="required">*</span></label>
+                            <select id="nivelEDI" name="nivelEDI">
+                                <option value="">Seleccione...</option>
+                                <option value="Nivel 1">Nivel 1</option>
+                                <option value="Nivel 2">Nivel 2</option>
+                                <option value="Nivel 3">Nivel 3</option>
+                                <option value="Nivel 4">Nivel 4</option>
+                                <option value="Nivel 5">Nivel 5</option>
+                                <option value="Nivel 6">Nivel 6</option>
+                                <option value="Nivel 7">Nivel 7</option>
+                                <option value="Nivel 8">Nivel 8</option>
+                                <option value="Nivel Permanente">Nivel Permanente</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 4: SNII -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>🏆</span>
+                        <span>Sistema Nacional de Investigadores (SNII)</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Cuenta con nombramiento SNII? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="cuentaSNII" value="Si" onclick="toggleSNII(true)" required>
+                                <span>Sí</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="cuentaSNII" value="No" onclick="toggleSNII(false)" required>
+                                <span>No</span>
+                            </label>
+                        </div>
+
+                        <div class="conditional-field" id="sniiFields">
+                            <div class="form-group">
+                                <label for="nivelSNII">Nivel SNII <span class="required">*</span></label>
+                                <select id="nivelSNII" name="nivelSNII">
+                                    <option value="">Seleccione...</option>
+                                    <option value="Candidato">Candidato</option>
+                                    <option value="Nivel I">Nivel I</option>
+                                    <option value="Nivel II">Nivel II</option>
+                                    <option value="Nivel III">Nivel III</option>
+                                    <option value="Emérito">Emérito</option>
+                                </select>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="sniiInicio">Fecha de Inicio <span class="required">*</span></label>
+                                    <input type="date" id="sniiInicio" name="sniiInicio">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="sniiFinal">Fecha de Término <span class="required">*</span></label>
+                                    <input type="date" id="sniiFinal" name="sniiFinal">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sniiConstancia">
+                                    Constancia/Comprobante SNII <span class="required">*</span>
+                                </label>
+                                <input type="file" id="sniiConstancia" name="sniiConstancia" 
+                                       accept=".pdf"
+                                       style="padding: 8px;">
+                                <div class="help-text">
+                                    <strong>Adjunte su constancia o comprobante del nombramiento SNII</strong><br>
+                                    <strong style="color: #6B1F3D;">Formato preferente: PDF</strong> (máx. 5 MB)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 5: ORCID -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>🔗</span>
+                        <span>Identificador ORCID</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="orcid">ORCID</label>
+                        <input type="text" id="orcid" name="orcid" 
+                               placeholder="0000-0000-0000-0000"
+                               pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]">
+                        <div class="help-text">
+                            <strong>Formato:</strong> 0000-0000-0000-0000<br>
+                            <strong style="color: #6B1F3D;">⚠️ Importante:</strong> El ORCID es un identificador único esencial para el registro y seguimiento de su productividad académica.<br>
+                            <strong>Si no tiene ORCID, regístrese gratuitamente en:</strong> 
+                            <a href="https://orcid.org/register" target="_blank" style="color: #2563eb; font-weight: 600;">
+                                https://orcid.org/register
+                            </a> (solo toma 30 segundos)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 6: Líneas de Investigación -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>🔬</span>
+                        <span>Líneas de Generación y Aplicación del Conocimiento</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Mencione al menos 3 líneas de generación y aplicación del conocimiento que maneje 
+                            y en las que haya trabajado en los últimos 3 años <span class="required">*</span>
+                        </label>
+                        <div class="help-text" style="margin-bottom: 15px;">
+                            Agregue entre 3 y 5 líneas de investigación principales
+                        </div>
+
+                        <div id="lineasContainer">
+                            <div class="line-item">
+                                <input type="text" name="linea1" placeholder="Línea de investigación 1" required>
+                            </div>
+                            <div class="line-item">
+                                <input type="text" name="linea2" placeholder="Línea de investigación 2" required>
+                            </div>
+                            <div class="line-item">
+                                <input type="text" name="linea3" placeholder="Línea de investigación 3" required>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-add" onclick="agregarLinea()">
+                            ➕ Agregar otra línea
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sección 7: Productividad Académica 2025 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>📄</span>
+                        <span>Productividad Académica 2025</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            DOI de publicaciones 2025 (Artículos, Revistas, Proceedings)
+                        </label>
+                        <div class="help-text" style="margin-bottom: 15px;">
+                            <strong>Si cuenta con publicaciones en 2025</strong>, agregue el DOI y el tipo de publicación.<br>
+                            Puede agregar múltiples DOIs. Si no tiene publicaciones aún, puede dejar esta sección vacía.
+                        </div>
+
+                        <div id="doisContainer">
+                            <div class="line-item" style="display: grid; grid-template-columns: 1fr 2fr auto; gap: 10px; align-items: center;">
+                                <select name="tipoDoi1" style="min-width: 150px;">
+                                    <option value="">Tipo...</option>
+                                    <option value="Artículo">Artículo</option>
+                                    <option value="Revista">Revista</option>
+                                    <option value="Proceedings">Proceedings</option>
+                                    <option value="Capítulo de libro">Capítulo de libro</option>
+                                    <option value="Libro">Libro</option>
+                                    <option value="Conferencia">Conferencia</option>
+                                </select>
+                                <input type="text" name="doi1" placeholder="DOI (Ej: 10.1234/ejemplo.2025.001)">
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-add" onclick="agregarDoi()">
+                            ➕ Agregar otra publicación
+                        </button>
+                    </div>
+
+                    <div class="help-text" style="margin-top: 10px; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+                        <strong>💡 Nota:</strong> El DOI (Digital Object Identifier) es el identificador único de su publicación. 
+                        Ejemplo de formato: 10.1234/nombre.revista.2025.001
+                    </div>
+                </div>
+
+                <!-- Botón de Envío -->
+                <div class="submit-container">
+                    <button type="submit" class="btn-submit">
+                        ✓ Enviar Formulario
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="footer">
+            <p><strong>Unidad Profesional Interdisciplinaria de Ingeniería</strong></p>
+            <p><strong>Campus Zacatecas - UPIIZ</strong></p>
+            <p style="margin-top: 5px;"><strong>Instituto Politécnico Nacional</strong></p>
+            <p style="font-style: italic; color: #6B1F3D; font-weight: 600; margin-top: 8px;">
+                La Técnica al Servicio de la Patria
+            </p>
+            <p style="margin-top: 12px; font-size: 0.9rem;">
+                <strong>Dirección:</strong> Consulte la ubicación en 
+                <a href="https://www.zacatecas.ipn.mx/" target="_blank" style="color: #2563eb; font-weight: 600;">
+                    www.zacatecas.ipn.mx
+                </a>
+            </p>
+            <p style="margin-top: 8px; font-size: 0.85rem;">
+                <strong>Departamento de Investigación</strong><br>
+                Jefe de Departamento: M. en C. Rafael Reveles Martínez
+            </p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                <strong>📧 Contacto:</strong> 
+                <a href="mailto:investigacion_UPIIZ@ipn.mx" style="color: #2563eb; text-decoration: none;">
+                    investigacion_UPIIZ@ipn.mx
+                </a><br>
+                <strong>📞 Extensión:</strong> 83530
+            </p>
+            <p style="margin-top: 10px; font-size: 0.85rem; opacity: 0.8;">
+                Para dudas o aclaraciones sobre este formulario, contacte al Departamento de Investigación
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let lineaCount = 3;
+        let doiCount = 1;
+        let proyectoCount = 0;
+        let categoriasUsadas = new Set();
+
+        // Validador de CURP en tiempo real
+        document.addEventListener('DOMContentLoaded', function() {
+            const curpInput = document.getElementById('curp');
+            
+            curpInput.addEventListener('input', function(e) {
+                // Convertir a mayúsculas automáticamente
+                this.value = this.value.toUpperCase();
+                
+                // Validar formato básico
+                if (this.value.length === 18) {
+                    const curpPattern = /^[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9A-Z][0-9]$/;
+                    if (curpPattern.test(this.value)) {
+                        this.style.borderColor = '#28a745';
+                    } else {
+                        this.style.borderColor = '#dc3545';
+                    }
+                } else if (this.value.length > 0) {
+                    this.style.borderColor = '#ffc107';
+                } else {
+                    this.style.borderColor = '#e0e0e0';
+                }
+            });
+
+            // Validador de tamaño de archivo SNII
+            const sniiConstanciaInput = document.getElementById('sniiConstancia');
+            
+            sniiConstanciaInput.addEventListener('change', function(e) {
+                const archivo = this.files[0];
+                if (archivo) {
+                    const tamañoMB = archivo.size / (1024 * 1024);
+                    
+                    if (tamañoMB > 5) {
+                        alert(`El archivo es demasiado grande (${tamañoMB.toFixed(2)} MB). El tamaño máximo permitido es 5 MB.`);
+                        this.value = '';
+                        this.style.borderColor = '#dc3545';
+                    } else {
+                        this.style.borderColor = '#28a745';
+                    }
+                }
+            });
+
+            // Validador de teléfono celular en tiempo real
+            const telefonoInput = document.getElementById('telefonoCelular');
+            
+            telefonoInput.addEventListener('input', function(e) {
+                // Solo permitir números
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                // Validar longitud
+                if (this.value.length === 10) {
+                    this.style.borderColor = '#28a745';
+                } else if (this.value.length > 0) {
+                    this.style.borderColor = '#ffc107';
+                } else {
+                    this.style.borderColor = '#e0e0e0';
+                }
+            });
+        });
+
+        function toggleTelefono(show) {
+            const telefonoFields = document.getElementById('telefonoFields');
+            const telefonoCelular = document.getElementById('telefonoCelular');
+            
+            if (show) {
+                telefonoFields.classList.add('active');
+                telefonoCelular.required = true;
+            } else {
+                telefonoFields.classList.remove('active');
+                telefonoCelular.required = false;
+                telefonoCelular.value = '';
+            }
+        }
+
+        function toggleProyectoVigente(show) {
+            const proyectoVigenteFields = document.getElementById('proyectoVigenteFields');
+            
+            if (show) {
+                proyectoVigenteFields.classList.add('active');
+            } else {
+                proyectoVigenteFields.classList.remove('active');
+                // Limpiar proyectos agregados
+                document.getElementById('proyectosListaContainer').innerHTML = '';
+                proyectoCount = 0;
+                categoriasUsadas.clear();
+            }
+        }
+
+        function agregarProyecto() {
+            proyectoCount++;
+            const container = document.getElementById('proyectosListaContainer');
+            
+            const div = document.createElement('div');
+            div.id = `proyecto_${proyectoCount}`;
+            div.style.marginBottom = '20px';
+            div.style.padding = '20px';
+            div.style.background = '#f8f9fa';
+            div.style.borderRadius = '8px';
+            div.style.border = '2px solid #e0e0e0';
+            
+            div.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4 style="margin: 0; color: #6B1F3D;">Proyecto ${proyectoCount}</h4>
+                    <button type="button" class="btn-remove" onclick="removerProyecto(${proyectoCount})">✕ Eliminar</button>
+                </div>
+
+                <div class="form-group">
+                    <label>Categoría <span class="required">*</span></label>
+                    <select id="categoria_${proyectoCount}" name="proyectos[${proyectoCount}][categoria]" 
+                            onchange="actualizarTiposProyecto(${proyectoCount})" required>
+                        <option value="">Seleccione categoría...</option>
+                        <option value="Iniciación">Iniciación en la investigación</option>
+                        <option value="Colaborativos">Grupos colaborativos</option>
+                        <option value="Innovación">Innovación y maduración tecnológica</option>
+                        <option value="Estratégicos">Proyectos estratégicos</option>
+                        <option value="Consorcios">Consorcios</option>
+                        <option value="Externos">Externos al IPN</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo <span class="required">*</span></label>
+                    <select id="tipo_${proyectoCount}" name="proyectos[${proyectoCount}][tipo]" required>
+                        <option value="">Primero seleccione categoría...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Nombre del Proyecto <span class="required">*</span></label>
+                    <input type="text" name="proyectos[${proyectoCount}][nombre]" 
+                           placeholder="Ingrese el nombre completo del proyecto" required>
+                    <div class="help-text">
+                        Si no recuerda el nombre, consúltelo en: 
+                        <a href="https://sappi.ipn.mx/" target="_blank" style="color: #2563eb; font-weight: 600;">
+                            SAPPI (Sistema de Administración de Proyectos)
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(div);
+        }
+
+        function removerProyecto(id) {
+            const elemento = document.getElementById(`proyecto_${id}`);
+            
+            // Obtener categoría antes de eliminar
+            const selectCategoria = document.getElementById(`categoria_${id}`);
+            if (selectCategoria && selectCategoria.value) {
+                categoriasUsadas.delete(selectCategoria.value);
+            }
+            
+            elemento.remove();
+            proyectoCount--;
+        }
+
+        function actualizarTiposProyecto(proyectoId) {
+            const categoria = document.getElementById(`categoria_${proyectoId}`).value;
+            const tipoSelect = document.getElementById(`tipo_${proyectoId}`);
+            
+            // Validar que no haya otra categoría igual
+            const selectsCategoria = document.querySelectorAll('[id^="categoria_"]');
+            let categoriaRepetida = false;
+            
+            selectsCategoria.forEach(select => {
+                if (select.id !== `categoria_${proyectoId}` && select.value === categoria && categoria !== '') {
+                    categoriaRepetida = true;
+                }
+            });
+            
+            if (categoriaRepetida) {
+                alert(`Ya tiene un proyecto de la categoría "${categoria}". Solo puede tener un proyecto por categoría.`);
+                document.getElementById(`categoria_${proyectoId}`).value = '';
+                tipoSelect.innerHTML = '<option value="">Primero seleccione categoría...</option>';
+                return;
+            }
+            
+            // Definir tipos según categoría (basado en https://www.ipn.mx/investigacion/convocatorias/proyectos.html)
+            const tiposPorCategoria = {
+                'Iniciación': [
+                    'Iniciación',
+                    'Individuales',
+                    'Especiales (Programa Especial de Consolidación)'
+                ],
+                'Colaborativos': [
+                    'Multidisciplinarios',
+                    'Transdisciplinarios',
+                    'PRORED (Proyectos en Red)'
+                ],
+                'Innovación': [
+                    'Desarrollo Tecnológico - Alumnos',
+                    'Desarrollo Tecnológico - Profesores',
+                    'Innovación - Alumnos',
+                    'Innovación - Profesores'
+                ],
+                'Estratégicos': [
+                    'Impacto Científico y Tecnológico',
+                    'Alianzas Internacionales',
+                    'Interés Estratégico Institucional'
+                ],
+                'Consorcios': [
+                    'Consorcio Nacional',
+                    'Consorcio Internacional'
+                ],
+                'Externos': [
+                    'SECIHTI (antes CONACyT)',
+                    'SENER',
+                    'Fundaciones',
+                    'Otro externo'
+                ]
+            };
+            
+            // Limpiar y agregar opciones
+            tipoSelect.innerHTML = '<option value="">Seleccione tipo...</option>';
+            
+            if (categoria && tiposPorCategoria[categoria]) {
+                tiposPorCategoria[categoria].forEach(tipo => {
+                    const option = document.createElement('option');
+                    option.value = tipo;
+                    option.textContent = tipo;
+                    tipoSelect.appendChild(option);
+                });
+            }
+        }
+
+        function toggleEDI(show) {
+            const ediFields = document.getElementById('ediFields');
+            const nivelEDI = document.getElementById('nivelEDI');
+            
+            if (show) {
+                ediFields.classList.add('active');
+                nivelEDI.required = true;
+            } else {
+                ediFields.classList.remove('active');
+                nivelEDI.required = false;
+                nivelEDI.value = '';
+            }
+        }
+
+        function toggleSNII(show) {
+            const sniiFields = document.getElementById('sniiFields');
+            const nivelSNII = document.getElementById('nivelSNII');
+            const sniiInicio = document.getElementById('sniiInicio');
+            const sniiFinal = document.getElementById('sniiFinal');
+            const sniiConstancia = document.getElementById('sniiConstancia');
+            
+            if (show) {
+                sniiFields.classList.add('active');
+                nivelSNII.required = true;
+                sniiInicio.required = true;
+                sniiFinal.required = true;
+                sniiConstancia.required = true;
+            } else {
+                sniiFields.classList.remove('active');
+                nivelSNII.required = false;
+                sniiInicio.required = false;
+                sniiFinal.required = false;
+                sniiConstancia.required = false;
+                nivelSNII.value = '';
+                sniiInicio.value = '';
+                sniiFinal.value = '';
+                sniiConstancia.value = '';
+            }
+        }
+
+        function agregarLinea() {
+            if (lineaCount >= 5) {
+                alert('Máximo 5 líneas de investigación');
+                return;
+            }
+
+            lineaCount++;
+            const container = document.getElementById('lineasContainer');
+            const div = document.createElement('div');
+            div.className = 'line-item';
+            div.innerHTML = `
+                <input type="text" name="linea${lineaCount}" placeholder="Línea de investigación ${lineaCount}">
+                <button type="button" class="btn-remove" onclick="removerLinea(this)">✕</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removerLinea(button) {
+            button.parentElement.remove();
+            lineaCount--;
+        }
+
+        function agregarDoi() {
+            if (doiCount >= 10) {
+                alert('Máximo 10 publicaciones');
+                return;
+            }
+
+            doiCount++;
+            const container = document.getElementById('doisContainer');
+            const div = document.createElement('div');
+            div.className = 'line-item';
+            div.style.display = 'grid';
+            div.style.gridTemplateColumns = '1fr 2fr auto';
+            div.style.gap = '10px';
+            div.style.alignItems = 'center';
+            div.innerHTML = `
+                <select name="tipoDoi${doiCount}" style="min-width: 150px;">
+                    <option value="">Tipo...</option>
+                    <option value="Artículo">Artículo</option>
+                    <option value="Revista">Revista</option>
+                    <option value="Proceedings">Proceedings</option>
+                    <option value="Capítulo de libro">Capítulo de libro</option>
+                    <option value="Libro">Libro</option>
+                    <option value="Conferencia">Conferencia</option>
+                </select>
+                <input type="text" name="doi${doiCount}" placeholder="DOI (Ej: 10.1234/ejemplo.2025.001)">
+                <button type="button" class="btn-remove" onclick="removerDoi(this)">✕</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removerDoi(button) {
+            button.parentElement.remove();
+            doiCount--;
+        }
+
+        document.getElementById('investigadorForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = {};
+
+            // Convertir FormData a objeto (excepto archivos)
+            for (let [key, value] of formData.entries()) {
+                if (!(value instanceof File)) {
+                    data[key] = value;
+                }
+            }
+
+            // Recopilar proyectos vigentes
+            data.proyectosVigentes = [];
+            const proyectosElements = document.querySelectorAll('[id^="proyecto_"]');
+            
+            proyectosElements.forEach(proyectoDiv => {
+                const id = proyectoDiv.id.split('_')[1];
+                const categoria = document.getElementById(`categoria_${id}`)?.value;
+                const tipo = document.getElementById(`tipo_${id}`)?.value;
+                const nombre = formData.get(`proyectos[${id}][nombre]`);
+                
+                if (categoria && tipo && nombre) {
+                    data.proyectosVigentes.push({
+                        categoria: categoria,
+                        tipo: tipo,
+                        nombre: nombre
+                    });
+                }
+            });
+
+            // Validar que si tiene proyecto vigente, agregó al menos uno
+            if (data.tieneProyectoVigente === 'Si' && data.proyectosVigentes.length === 0) {
+                alert('Por favor, agregue al menos un proyecto vigente usando el botón "➕ Agregar Proyecto"');
+                return;
+            }
+
+            // Recopilar líneas de investigación
+            data.lineasInvestigacion = [];
+            for (let i = 1; i <= lineaCount; i++) {
+                const linea = formData.get(`linea${i}`);
+                if (linea && linea.trim()) {
+                    data.lineasInvestigacion.push(linea.trim());
+                }
+            }
+
+            // Recopilar publicaciones 2025 (DOIs)
+            data.publicaciones2025 = [];
+            for (let i = 1; i <= doiCount; i++) {
+                const tipo = formData.get(`tipoDoi${i}`);
+                const doi = formData.get(`doi${i}`);
+                if (doi && doi.trim()) {
+                    data.publicaciones2025.push({
+                        tipo: tipo || 'No especificado',
+                        doi: doi.trim()
+                    });
+                }
+            }
+
+            // Obtener archivo SNII si existe
+            const sniiConstancia = document.getElementById('sniiConstancia');
+            const archivoSNII = sniiConstancia.files[0];
+
+            console.log('Datos del formulario:', data);
+            if (archivoSNII) {
+                console.log('Archivo SNII:', archivoSNII.name, archivoSNII.size, 'bytes');
+            }
+
+            try {
+                // Crear FormData para enviar con archivo
+                const envioFormData = new FormData();
+                
+                // Agregar datos como JSON
+                envioFormData.append('datos', JSON.stringify(data));
+                
+                // Agregar archivo si existe
+                if (archivoSNII) {
+                    envioFormData.append('sniiConstancia', archivoSNII);
+                }
+
+                // Enviar datos al servidor
+                const response = await fetch('/api/formulario-investigador', {
+                    method: 'POST',
+                    body: envioFormData
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    
+                    // Actualizar mensaje de éxito
+                    let mensaje = '✓ Formulario enviado exitosamente. Gracias por su participación.';
+                    if (result.constancia_snii) {
+                        mensaje += `<br><strong>✓ Constancia SNII guardada:</strong> ${result.constancia_snii}`;
+                    }
+                    document.getElementById('successMessage').innerHTML = mensaje;
+                    
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    
+                    // Scroll al mensaje de éxito
+                    document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+
+                    // Descargar también como JSON en el navegador
+                    descargarJSON(data);
+
+                    // Reiniciar formulario después de 3 segundos
+                    setTimeout(() => {
+                        this.reset();
+                        lineaCount = 3;
+                        doiCount = 1;
+                        proyectoCount = 0;
+                        categoriasUsadas.clear();
+                        document.getElementById('successMessage').style.display = 'none';
+                        
+                        // Limpiar contenedores dinámicos adicionales
+                        const lineasContainer = document.getElementById('lineasContainer');
+                        while (lineasContainer.children.length > 3) {
+                            lineasContainer.removeChild(lineasContainer.lastChild);
+                        }
+                        
+                        const doisContainer = document.getElementById('doisContainer');
+                        while (doisContainer.children.length > 1) {
+                            doisContainer.removeChild(doisContainer.lastChild);
+                        }
+                        
+                        const proyectosContainer = document.getElementById('proyectosListaContainer');
+                        proyectosContainer.innerHTML = '';
+                    }, 3000);
+                } else {
+                    throw new Error('Error al enviar');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('errorMessage').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        function descargarJSON(data) {
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `investigador_${data.claveEmpleado}_${Date.now()}.json`;
+            link.click();
+        }
+    </script>
+</body>
+</html>
+

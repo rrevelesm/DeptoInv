@@ -1,0 +1,212 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║            📤 PROYECTO LISTO PARA SUBIR A GITHUB                          ║
+║                  DeptoInv_UPIIZ                                          ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════════════════════
+🔗 TU REPOSITORIO
+═══════════════════════════════════════════════════════════════════════════
+
+    https://github.com/rrevelesm/DeptoInv_UPIIZ
+
+
+═══════════════════════════════════════════════════════════════════════════
+✅ ARCHIVOS CREADOS Y PREPARADOS
+═══════════════════════════════════════════════════════════════════════════
+
+    📄 .gitignore                → Excluye archivos sensibles
+    📄 README.md                 → Documentación principal (hermoso)
+    📄 LICENSE                   → Licencia MIT
+    📄 SUBIR_A_GITHUB.md         → Guía completa para subir
+    📄 subir_github.bat          → Script automático para subir
+    📄 RESUMEN_GITHUB.txt        → Este archivo
+
+    📁 docs/                     → Todas las guías organizadas
+       ├── TUTORIAL_PYTHONANYWHERE.md
+       ├── COMPARTIR_FORMULARIO.md
+       ├── USAR_NGROK.md
+       ├── GUIA_GESTION_FORMULARIOS.md
+       ├── FORMULARIO_INVESTIGADORES.md
+       └── ...
+
+    📁 batch/                    → Scripts de inicio
+       ├── iniciar_sistema_red.bat
+       └── iniciar_con_ngrok.bat
+
+    📁 scripts/                  → Scripts Python
+       ├── importar_solo_aprobados.py
+       ├── exportar_formularios_excel.py
+       └── init_data.py
+
+
+═══════════════════════════════════════════════════════════════════════════
+🚀 CÓMO SUBIR A GITHUB (3 OPCIONES)
+═══════════════════════════════════════════════════════════════════════════
+
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │ OPCIÓN 1: Script Automático (MÁS FÁCIL) ⭐                         │
+    └─────────────────────────────────────────────────────────────────────┘
+
+    1. Asegúrate de tener Git instalado:
+       https://git-scm.com/download/win
+
+    2. Ejecuta:
+       subir_github.bat
+
+    3. Cuando te pida credenciales:
+       Usuario: rrevelesm
+       Contraseña: Tu Personal Access Token
+
+
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │ OPCIÓN 2: Comandos Manuales                                         │
+    └─────────────────────────────────────────────────────────────────────┘
+
+    git init
+    git add .
+    git commit -m "🎓 Primer commit: Sistema UPIIZ"
+    git branch -M main
+    git remote add origin https://github.com/rrevelesm/DeptoInv_UPIIZ.git
+    git push -u origin main
+
+
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │ OPCIÓN 3: GitHub Desktop (Interfaz Gráfica)                         │
+    └─────────────────────────────────────────────────────────────────────┘
+
+    1. Descarga GitHub Desktop:
+       https://desktop.github.com/
+
+    2. Inicia sesión con tu cuenta (rrevelesm)
+
+    3. File → Add Local Repository → Selecciona tu carpeta
+
+    4. Commit y Push
+
+
+═══════════════════════════════════════════════════════════════════════════
+🔑 CREAR PERSONAL ACCESS TOKEN
+═══════════════════════════════════════════════════════════════════════════
+
+    Si Git te pide contraseña y no funciona:
+
+    1. Ve a: https://github.com/settings/tokens
+
+    2. "Generate new token" → "Generate new token (classic)"
+
+    3. Configuración:
+       - Nota: "Token para DeptoInv_UPIIZ"
+       - Expiration: 90 días
+       - Permisos: ✅ repo (marcar todo)
+
+    4. Generate token
+
+    5. COPIA EL TOKEN (ghp_xxxxxxxxxxxx)
+
+    6. Úsalo como contraseña cuando hagas git push
+
+
+═══════════════════════════════════════════════════════════════════════════
+📋 QUÉ SE SUBE Y QUÉ NO
+═══════════════════════════════════════════════════════════════════════════
+
+    ✅ SÍ SE SUBE:
+    ─────────────
+    • Todo el código fuente (*.py, *.html, *.css, *.js)
+    • Documentación (*.md)
+    • Scripts (.bat)
+    • requirements.txt
+    • README.md hermoso con toda la info
+    • LICENSE
+    • Proyecto Excel de ejemplo
+
+    ❌ NO SE SUBE (protegido por .gitignore):
+    ──────────────────────────────────────────
+    • investigacion_upiiz.db (base de datos local)
+    • formularios/ (datos personales de investigadores)
+    • __pycache__/ (archivos temporales Python)
+    • venv/ (entorno virtual)
+    • *.log (logs)
+    • ngrok.exe
+
+
+═══════════════════════════════════════════════════════════════════════════
+🎨 README.md - Vista Previa
+═══════════════════════════════════════════════════════════════════════════
+
+    Tu README.md incluye:
+
+    ✨ Banner profesional
+    📊 Características principales con emojis
+    🚀 Guía de instalación paso a paso
+    🌐 Opciones de despliegue (PythonAnywhere, Ngrok, Red local)
+    📁 Estructura del proyecto
+    🔧 Tecnologías utilizadas
+    📊 Documentación de la API REST
+    🔐 Información de seguridad
+    📧 Template de email para investigadores
+    🆘 Solución de problemas
+    📞 Información de contacto UPIIZ
+
+    Se verá HERMOSO en GitHub 🌟
+
+
+═══════════════════════════════════════════════════════════════════════════
+✅ DESPUÉS DE SUBIR
+═══════════════════════════════════════════════════════════════════════════
+
+    1. Verifica en: https://github.com/rrevelesm/DeptoInv_UPIIZ
+
+    2. El README.md se mostrará automáticamente
+
+    3. Puedes compartir el link con otros
+
+    4. Para desplegar en PythonAnywhere:
+       git clone https://github.com/rrevelesm/DeptoInv_UPIIZ.git
+
+
+═══════════════════════════════════════════════════════════════════════════
+🔄 ACTUALIZAR EN EL FUTURO
+═══════════════════════════════════════════════════════════════════════════
+
+    Cuando hagas cambios:
+
+    git add .
+    git commit -m "Descripción del cambio"
+    git push
+
+
+═══════════════════════════════════════════════════════════════════════════
+🛠️ SI TIENES PROBLEMAS
+═══════════════════════════════════════════════════════════════════════════
+
+    1. Lee: SUBIR_A_GITHUB.md (guía completa)
+
+    2. Verifica Git: git --version
+
+    3. Usa Personal Access Token (no contraseña normal)
+
+    4. Si todo falla, usa GitHub Desktop (interfaz gráfica)
+
+
+═══════════════════════════════════════════════════════════════════════════
+📞 INFORMACIÓN DEL PROYECTO
+═══════════════════════════════════════════════════════════════════════════
+
+    Proyecto: Sistema de Gestión de Investigación
+    Institución: UPIIZ - Campus Zacatecas
+    Departamento: Investigación
+    Responsable: M. en C. Rafael Reveles Martínez
+    
+    GitHub: https://github.com/rrevelesm/DeptoInv_UPIIZ
+    Licencia: MIT
+
+
+═══════════════════════════════════════════════════════════════════════════
+🎓 La Técnica al Servicio de la Patria
+© 2025 UPIIZ - Instituto Politécnico Nacional
+═══════════════════════════════════════════════════════════════════════════
+

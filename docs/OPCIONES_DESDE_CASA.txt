@@ -1,0 +1,223 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║            🏠 OPCIONES PARA COMPARTIR DESDE CASA                          ║
+║                  (Cuando NO estás en red UPIIZ)                          ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════════════════════
+  OPCIÓN 1: DESARROLLO LOCAL (Solo para ti)
+═══════════════════════════════════════════════════════════════════════════
+
+    ✅ Para: Probar, desarrollar, experimentar
+    ❌ No para: Compartir con investigadores
+
+    Cómo usar:
+    1. python app.py
+    2. Abre: http://localhost:5000/formulario
+
+    Ventajas:
+    ✅ Rápido y simple
+    ✅ No necesitas configurar nada
+    ✅ Ideal para desarrollo
+
+    Desventajas:
+    ❌ Solo tú puedes acceder
+    ❌ No puedes compartir con investigadores
+
+
+═══════════════════════════════════════════════════════════════════════════
+  OPCIÓN 2: NGROK (Temporal - Compartir AHORA) ⭐ RECOMENDADO
+═══════════════════════════════════════════════════════════════════════════
+
+    ✅ Para: Recolectar formularios AHORA desde casa
+    ✅ Para: Sesiones cortas (2-3 horas)
+
+    Cómo usar:
+    1. Descarga ngrok: https://ngrok.com/download
+    2. Descomprime ngrok.exe en esta carpeta
+    3. Ejecuta: iniciar_con_ngrok.bat
+    4. Copia la URL que te da (https://abc123.ngrok.io)
+    5. Comparte: https://abc123.ngrok.io/formulario
+
+    Ventajas:
+    ✅ Funciona AHORA mismo
+    ✅ Gratis
+    ✅ Los investigadores pueden acceder desde cualquier lugar
+    ✅ Funciona en celulares, tablets, PCs
+    ✅ HTTPS (seguro)
+
+    Desventajas:
+    ⚠️ Tu PC debe estar encendida
+    ⚠️ La URL cambia cada vez que reinicias
+    ⚠️ Sesión gratuita: 2 horas
+    ⚠️ Tienes que compartir nueva URL si reinicias
+
+
+═══════════════════════════════════════════════════════════════════════════
+  OPCIÓN 3: PYTHONANYWHERE (Permanente - En la nube) ☁️
+═══════════════════════════════════════════════════════════════════════════
+
+    ✅ Para: URL permanente que no cambia
+    ✅ Para: No tener tu PC encendida
+    ✅ Para: Recolección de varios días/semanas
+
+    Cómo usar:
+    1. Crea cuenta en: https://www.pythonanywhere.com
+    2. Sube tus archivos
+    3. Configura web app
+    4. Tu URL: https://TU-USUARIO.pythonanywhere.com/formulario
+
+    Guía completa: DESPLEGAR_NUBE.md
+
+    Ventajas:
+    ✅ URL permanente (no cambia)
+    ✅ Disponible 24/7
+    ✅ No necesitas tu PC encendida
+    ✅ Gratis para uso básico
+    ✅ Profesional
+
+    Desventajas:
+    ⏰ Toma 15-30 minutos configurar
+    📚 Requiere seguir pasos de configuración
+
+
+═══════════════════════════════════════════════════════════════════════════
+  OPCIÓN 4: ESPERAR A ESTAR EN UPIIZ (Red Local)
+═══════════════════════════════════════════════════════════════════════════
+
+    ✅ Para: Cuando estés en UPIIZ
+    ✅ Para: Red local institucional
+
+    Cómo usar:
+    1. Llevar tu laptop a UPIIZ
+    2. Conectarte al WiFi de UPIIZ
+    3. Ejecutar: iniciar_sistema_red.bat
+    4. Compartir: http://TU-IP:5000/formulario
+
+    Ventajas:
+    ✅ No necesitas internet
+    ✅ Más rápido (red local)
+    ✅ Más seguro (solo red UPIIZ)
+
+    Desventajas:
+    ❌ Debes estar físicamente en UPIIZ
+    ❌ Tu PC debe estar encendida
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                        📊 TABLA COMPARATIVA                               ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+┌───────────────┬──────────┬──────────┬──────────┬──────────┐
+│ Característica│ Localhost│  Ngrok   │PythonAny.│Red Local │
+├───────────────┼──────────┼──────────┼──────────┼──────────┤
+│ Solo para ti  │    ✅    │    ❌    │    ❌    │    ❌    │
+│ Compartir     │    ❌    │    ✅    │    ✅    │    ✅    │
+│ Gratis        │    ✅    │    ✅    │    ✅    │    ✅    │
+│ URL permanente│    ✅    │    ❌    │    ✅    │    ⚠️    │
+│ PC encendida  │    ✅    │    ✅    │    ❌    │    ✅    │
+│ Internet      │    ❌    │    ✅    │    ✅    │    ❌    │
+│ Setup rápido  │    ✅    │    ✅    │    ❌    │    ✅    │
+│ Desde casa    │    ✅    │    ✅    │    ✅    │    ❌    │
+└───────────────┴──────────┴──────────┴──────────┴──────────┘
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                    💡 ¿CUÁL OPCIÓN ELEGIR?                                ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+    🎯 SI NECESITAS COMPARTIR HOY (desde casa):
+       → Usa NGROK (Opción 2)
+       → Guía: USAR_NGROK.md
+       → Script: iniciar_con_ngrok.bat
+
+    🎯 SI VAS A RECOLECTAR POR VARIOS DÍAS:
+       → Usa PYTHONANYWHERE (Opción 3)
+       → Guía: DESPLEGAR_NUBE.md
+       → URL permanente
+
+    🎯 SI SOLO QUIERES PROBAR:
+       → Usa LOCALHOST (Opción 1)
+       → Comando: python app.py
+
+    🎯 SI YA ESTÁS EN UPIIZ:
+       → Usa RED LOCAL (Opción 4)
+       → Script: iniciar_sistema_red.bat
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                        🚀 PASOS RÁPIDOS                                   ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+    PARA COMPARTIR AHORA DESDE CASA (Ngrok):
+    ────────────────────────────────────────
+    1. Descarga ngrok: https://ngrok.com/download
+    2. Pon ngrok.exe en esta carpeta
+    3. Ejecuta: iniciar_con_ngrok.bat
+    4. Copia la URL HTTPS que aparece
+    5. Comparte: https://TU-URL.ngrok.io/formulario
+    
+    ⏰ Tiempo: 5 minutos
+
+
+    PARA URL PERMANENTE (PythonAnywhere):
+    ─────────────────────────────────────
+    1. Crea cuenta: https://www.pythonanywhere.com
+    2. Sube archivos
+    3. Configura web app
+    4. Comparte: https://TU-USUARIO.pythonanywhere.com/formulario
+    
+    ⏰ Tiempo: 20-30 minutos
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                        📁 ARCHIVOS DE AYUDA                               ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+    USAR_NGROK.md             → Guía completa de Ngrok
+    iniciar_con_ngrok.bat     → Script para iniciar con Ngrok
+    
+    DESPLEGAR_NUBE.md         → Guía de PythonAnywhere
+    
+    COMPARTIR_FORMULARIO.md   → Guía red local UPIIZ
+    iniciar_sistema_red.bat   → Script para red local
+    
+    URLS_SISTEMA.txt          → Resumen de todas las URLs
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                        💬 MI RECOMENDACIÓN                                ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+    📍 ESTÁS EN CASA AHORA:
+
+    ✅ Para probar AHORA:
+       → Usa NGROK (5 minutos de setup)
+       → Ideal para pruebas o sesiones cortas
+
+    ✅ Para uso profesional:
+       → Usa PYTHONANYWHERE (30 minutos de setup)
+       → URL permanente y profesional
+       → No necesitas tu PC encendida
+       → Mejor para recolección de varios días
+
+    ✅ Cuando vayas a UPIIZ:
+       → Usa RED LOCAL
+       → Más rápido y seguro
+
+
+═══════════════════════════════════════════════════════════════════════════
+📞 CONTACTO
+═══════════════════════════════════════════════════════════════════════════
+
+    Departamento de Investigación - UPIIZ
+    M. en C. Rafael Reveles Martínez
+    investigacion_UPIIZ@ipn.mx
+    Ext. 83530
+
+    La Técnica al Servicio de la Patria
+    © 2025 UPIIZ - Instituto Politécnico Nacional
+═══════════════════════════════════════════════════════════════════════════
+

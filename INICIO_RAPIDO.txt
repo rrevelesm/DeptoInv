@@ -1,0 +1,76 @@
+=====================================================
+  SISTEMA DE GESTIÓN DE INVESTIGACIÓN - INICIO RÁPIDO
+=====================================================
+
+📌 OPCIÓN 1: INICIO AUTOMÁTICO (RECOMENDADO - WINDOWS)
+------------------------------------------------------
+1. Doble clic en: iniciar_sistema.bat
+2. Espera a que se instalen las dependencias
+3. Abre tu navegador en: http://localhost:5000
+
+📌 OPCIÓN 2: INICIO MANUAL
+--------------------------
+1. Instalar dependencias:
+   pip install -r requirements.txt
+
+2. Inicializar base de datos con datos de ejemplo:
+   python init_data.py
+
+3. Iniciar servidor:
+   python app.py
+
+4. Abrir navegador en: http://localhost:5000
+
+📋 FUNCIONALIDADES PRINCIPALES
+------------------------------
+✓ Gestión de Investigadores
+✓ Control de Proyectos
+✓ Catálogo de Publicaciones
+✓ Registro SNII
+✓ Búsqueda y Filtros
+✓ Estadísticas en Tiempo Real
+
+🔧 REQUISITOS
+-------------
+- Python 3.8 o superior
+- Navegador web moderno
+- Conexión a internet (solo para instalación inicial)
+
+📁 ESTRUCTURA
+-------------
+- app.py          → Servidor y API
+- models.py       → Base de datos
+- static/         → Interfaz web
+- init_data.py    → Datos de ejemplo
+
+❓ PROBLEMAS COMUNES
+-------------------
+
+Problema: "Python no reconocido"
+Solución: Instala Python desde python.org
+
+Problema: "Puerto 5000 en uso"
+Solución: Edita app.py, cambia port=5000 a port=5001
+
+Problema: "ModuleNotFoundError"
+Solución: pip install -r requirements.txt
+
+🔒 SEGURIDAD
+------------
+IMPORTANTE: Este sistema es para uso LOCAL únicamente.
+No expongas a Internet sin implementar autenticación.
+
+💾 RESPALDO
+-----------
+Respaldar: Copia el archivo depto_investigacion.db
+Restaurar: Reemplaza el archivo .db con tu respaldo
+
+📞 SOPORTE
+----------
+Consulta el archivo README.md para más información.
+
+=====================================================
+              ¡Listo para usar!
+=====================================================
+
+

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar QR - Formulario UPIIZ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6B1F3D 0%, #8B2F4D 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        h1 {
+            color: #6B1F3D;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #6B1F3D;
+        }
+
+        button {
+            background: #6B1F3D;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+        }
+
+        button:hover {
+            background: #8B2F4D;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(107, 31, 61, 0.3);
+        }
+
+        #qrcode {
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border: 3px solid #6B1F3D;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            color: #6B1F3D;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .url-display {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: #1976d2;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Generador de QR</h1>
+        <div class="subtitle">Formulario de Investigadores - UPIIZ</div>
+
+        <div class="alert">
+            ⚠️ Ingresa tu dirección IP local (Ej: 192.168.0.4)
+        </div>
+
+        <div class="input-group">
+            <label>📍 Tu Dirección IP:</label>
+            <input type="text" id="ipAddress" placeholder="Ej: 192.168.0.4" value="192.168.0.4">
+        </div>
+
+        <div id="urlPreview" class="url-display" style="display: none;"></div>
+
+        <button onclick="generarQR()">🔄 Generar Código QR</button>
+
+        <div id="qrcode"></div>
+
+        <div id="downloadButtons" style="display: none;">
+            <button onclick="descargarQR()">📥 Descargar Imagen</button>
+            <button onclick="imprimirQR()">🖨️ Imprimir</button>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Instrucciones:</h3>
+            <ol>
+                <li>Verifica tu IP local ejecutando <code>ipconfig</code> en PowerShell</li>
+                <li>Ingresa tu IP en el campo de arriba</li>
+                <li>Haz clic en "Generar Código QR"</li>
+                <li>Descarga o imprime el código QR</li>
+                <li>Compártelo con los investigadores</li>
+            </ol>
+
+            <h3 style="margin-top: 20px;">🌐 Cómo Compartir:</h3>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li>Imprime el QR y pégalo en áreas comunes</li>
+                <li>Envía la imagen por WhatsApp/Email</li>
+                <li>Los investigadores lo escanean con su celular</li>
+                <li>Se abre automáticamente el formulario</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <strong>UPIIZ - Instituto Politécnico Nacional</strong><br>
+            Departamento de Investigación<br>
+            M. en C. Rafael Reveles Martínez<br>
+            <a href="https://www.zacatecas.ipn.mx" target="_blank" style="color: #6B1F3D;">www.zacatecas.ipn.mx</a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        let qrCodeInstance = null;
+
+        document.getElementById('ipAddress').addEventListener('input', function() {
+            const ip = this.value.trim();
+            if (ip) {
+                const url = `http://${ip}:5000/formulario`;
+                document.getElementById('urlPreview').textContent = url;
+                document.getElementById('urlPreview').style.display = 'block';
+            } else {
+                document.getElementById('urlPreview').style.display = 'none';
+            }
+        });
+
+        // Trigger initial preview
+        document.getElementById('ipAddress').dispatchEvent(new Event('input'));
+
+        function generarQR() {
+            const ip = document.getElementById('ipAddress').value.trim();
+            
+            if (!ip) {
+                alert('Por favor ingresa tu dirección IP');
+                return;
+            }
+
+            // Validación básica de IP
+            const ipPattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+            if (!ipPattern.test(ip)) {
+                alert('Por favor ingresa una IP válida (Ej: 192.168.0.4)');
+                return;
+            }
+
+            const url = `http://${ip}:5000/formulario`;
+            const qrContainer = document.getElementById('qrcode');
+            
+            // Limpiar QR anterior
+            qrContainer.innerHTML = '';
+            
+            // Generar nuevo QR
+            qrCodeInstance = new QRCode(qrContainer, {
+                text: url,
+                width: 300,
+                height: 300,
+                colorDark: "#6B1F3D",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Agregar título al QR
+            setTimeout(() => {
+                const titleDiv = document.createElement('div');
+                titleDiv.style.marginTop = '15px';
+                titleDiv.style.fontSize = '1.1rem';
+                titleDiv.style.fontWeight = '600';
+                titleDiv.style.color = '#6B1F3D';
+                titleDiv.textContent = 'Formulario de Investigadores UPIIZ';
+                qrContainer.appendChild(titleDiv);
+
+                const urlDiv = document.createElement('div');
+                urlDiv.style.marginTop = '5px';
+                urlDiv.style.fontSize = '0.85rem';
+                urlDiv.style.color = '#666';
+                urlDiv.textContent = url;
+                qrContainer.appendChild(urlDiv);
+
+                document.getElementById('downloadButtons').style.display = 'block';
+            }, 100);
+        }
+
+        function descargarQR() {
+            const qrCanvas = document.querySelector('#qrcode canvas');
+            if (!qrCanvas) {
+                alert('Primero genera el código QR');
+                return;
+            }
+
+            // Crear canvas más grande con título
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 400;
+            canvas.height = 480;
+            
+            // Fondo blanco
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Título
+            ctx.fillStyle = '#6B1F3D';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Formulario de Investigadores', canvas.width / 2, 30);
+            
+            // UPIIZ
+            ctx.font = '16px Arial';
+            ctx.fillText('UPIIZ - IPN', canvas.width / 2, 55);
+            
+            // QR Code
+            ctx.drawImage(qrCanvas, 50, 80, 300, 300);
+            
+            // URL
+            const ip = document.getElementById('ipAddress').value.trim();
+            const url = `http://${ip}:5000/formulario`;
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#666';
+            ctx.fillText(url, canvas.width / 2, 410);
+            
+            // Footer
+            ctx.font = '10px Arial';
+            ctx.fillText('Depto. Investigación - M. en C. Rafael Reveles Martínez', canvas.width / 2, 445);
+            ctx.fillText('www.zacatecas.ipn.mx', canvas.width / 2, 465);
+            
+            // Descargar
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `QR_Formulario_UPIIZ_${ip}.png`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        function imprimirQR() {
+            const qrContainer = document.getElementById('qrcode');
+            if (!qrContainer.querySelector('canvas')) {
+                alert('Primero genera el código QR');
+                return;
+            }
+
+            const printWindow = window.open('', '', 'height=600,width=800');
+            const ip = document.getElementById('ipAddress').value.trim();
+            const url = `http://${ip}:5000/formulario`;
+            
+            printWindow.document.write('<html><head><title>Imprimir QR - UPIIZ</title>');
+            printWindow.document.write('<style>');
+            printWindow.document.write('body { font-family: Arial; text-align: center; padding: 40px; }');
+            printWindow.document.write('h1 { color: #6B1F3D; margin-bottom: 10px; }');
+            printWindow.document.write('h2 { color: #666; margin-bottom: 30px; }');
+            printWindow.document.write('.footer { margin-top: 30px; color: #666; font-size: 14px; }');
+            printWindow.document.write('</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write('<h1>🎓 Formulario de Investigadores</h1>');
+            printWindow.document.write('<h2>UPIIZ - Instituto Politécnico Nacional</h2>');
+            printWindow.document.write(qrContainer.innerHTML);
+            printWindow.document.write('<div class="footer">');
+            printWindow.document.write('<p><strong>Departamento de Investigación</strong></p>');
+            printWindow.document.write('<p>M. en C. Rafael Reveles Martínez</p>');
+            printWindow.document.write('<p>www.zacatecas.ipn.mx</p>');
+            printWindow.document.write('<p>La Técnica al Servicio de la Patria</p>');
+            printWindow.document.write('</div>');
+            printWindow.document.write('</body></html>');
+            
+            printWindow.document.close();
+            printWindow.focus();
+            
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
+    </script>
+</body>
+</html>
+
