@@ -447,6 +447,38 @@
                         </select>
                     </div>
 
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tipoPlaza">Tipo de Plaza <span class="required">*</span></label>
+                            <select id="tipoPlaza" name="tipoPlaza" required>
+                                <option value="">Seleccione...</option>
+                                <option value="Base/Definitiva">Base/Definitiva (Propiedad)</option>
+                                <option value="Interinato">Interinato</option>
+                                <option value="Contrato">Contrato</option>
+                                <option value="Por Honorarios">Por Honorarios</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                            <div class="help-text">
+                                Indique si cuenta con plaza base o el tipo de contratación
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="horasContratacion">Horas de Contratación <span class="required">*</span></label>
+                            <select id="horasContratacion" name="horasContratacion" required>
+                                <option value="">Seleccione...</option>
+                                <option value="Tiempo Completo (40 hrs)">Tiempo Completo (40 hrs)</option>
+                                <option value="3/4 de Tiempo (30 hrs)">3/4 de Tiempo (30 hrs)</option>
+                                <option value="Medio Tiempo (20 hrs)">Medio Tiempo (20 hrs)</option>
+                                <option value="Por Horas (menos de 20)">Por Horas (menos de 20)</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                            <div class="help-text">
+                                Horas semanales de contratación en el IPN
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="correoInstitucional">Correo Electrónico Institucional <span class="required">*</span></label>
                         <input type="email" id="correoInstitucional" name="correoInstitucional" required 
