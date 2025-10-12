@@ -1027,6 +1027,16 @@
                             <option value="">Primero seleccione categoría...</option>
                         </select>
                     </div>
+
+                    <div class="form-group">
+                        <label>Clave SIP <span class="required">*</span></label>
+                        <input type="text" id="claveSIP_interno_${proyectoCount}" name="proyectos[${proyectoCount}][claveSIP]" 
+                               placeholder="Ej: SIP-20250123" 
+                               style="text-transform: uppercase;">
+                        <div class="help-text">
+                            Clave del Sistema de Administración de Proyectos (SAPPI)
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Campos para Financiamiento EXTERNO -->
@@ -1079,15 +1089,24 @@
                             Opcional: Describa brevemente el proyecto
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label>Clave SIP <span class="required">*</span></label>
-                    <input type="text" id="claveSIP_${proyectoCount}" name="proyectos[${proyectoCount}][claveSIP]" 
-                           placeholder="Ej: SIP-20250123" required
-                           style="text-transform: uppercase;">
-                    <div class="help-text">
-                        Clave del Sistema de Administración de Proyectos (SAPPI)
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="tieneClaveSIP_${proyectoCount}" 
+                                   onclick="toggleClaveSIPExterno(${proyectoCount})"
+                                   style="width: auto; height: auto;">
+                            <span>¿Este proyecto tiene Clave SIP del IPN?</span>
+                        </label>
+                        <div class="help-text">
+                            Marque solo si el proyecto externo fue registrado en SAPPI del IPN
+                        </div>
+                        
+                        <div id="claveSIPExterno_${proyectoCount}" style="display: none; margin-top: 15px;">
+                            <label>Clave SIP</label>
+                            <input type="text" id="claveSIP_externo_${proyectoCount}" name="proyectos[${proyectoCount}][claveSIPExterna]" 
+                                   placeholder="Ej: EXT-2025-123" 
+                                   style="text-transform: uppercase;">
+                        </div>
                     </div>
                 </div>
 
@@ -1120,6 +1139,18 @@
             proyectoCount--;
         }
 
+        function toggleClaveSIPExterno(proyectoId) {
+            const checkbox = document.getElementById(`tieneClaveSIP_${proyectoId}`);
+            const claveSIPDiv = document.getElementById(`claveSIPExterno_${proyectoId}`);
+            
+            if (checkbox.checked) {
+                claveSIPDiv.style.display = 'block';
+            } else {
+                claveSIPDiv.style.display = 'none';
+                document.getElementById(`claveSIP_externo_${proyectoId}`).value = '';
+            }
+        }
+
         function toggleTipoFinanciamiento(proyectoId) {
             const financiamiento = document.getElementById(`financiamiento_${proyectoId}`).value;
             const camposInterno = document.getElementById(`camposInterno_${proyectoId}`);
@@ -1128,6 +1159,7 @@
             // Elementos de campos internos
             const categoria = document.getElementById(`categoria_${proyectoId}`);
             const tipo = document.getElementById(`tipo_${proyectoId}`);
+            const claveSIPInterno = document.getElementById(`claveSIP_interno_${proyectoId}`);
             
             // Elementos de campos externos
             const fuenteExterna = document.getElementById(`fuenteExterna_select_${proyectoId}`);
@@ -1141,6 +1173,7 @@
                 
                 categoria.required = true;
                 tipo.required = true;
+                claveSIPInterno.required = true;
                 fuenteExterna.required = false;
                 categoriaExt.required = false;
                 tipoExt.required = false;
@@ -1157,6 +1190,7 @@
                 
                 categoria.required = false;
                 tipo.required = false;
+                claveSIPInterno.required = false;
                 fuenteExterna.required = true;
                 categoriaExt.required = true;
                 tipoExt.required = true;
@@ -1164,6 +1198,7 @@
                 // Limpiar campos internos
                 categoria.value = '';
                 tipo.value = '';
+                claveSIPInterno.value = '';
                 
             } else {
                 // No ha seleccionado nada
@@ -1425,27 +1460,27 @@
             proyectosElements.forEach(proyectoDiv => {
                 const id = proyectoDiv.id.split('_')[1];
                 const financiamiento = formData.get(`proyectos[${id}][financiamiento]`);
-                const claveSIP = formData.get(`proyectos[${id}][claveSIP]`);
                 const nombre = formData.get(`proyectos[${id}][nombre]`);
                 
-                if (!financiamiento || !claveSIP || !nombre) {
+                if (!financiamiento || !nombre) {
                     return; // Saltar si faltan datos básicos
                 }
                 
                 const proyecto = {
                     financiamiento: financiamiento,
-                    claveSIP: claveSIP,
                     nombre: nombre
                 };
                 
                 if (financiamiento === 'Interno IPN') {
-                    // Proyectos internos: usar categoría y tipo
+                    // Proyectos internos: usar categoría, tipo y clave SIP (obligatoria)
                     const categoria = document.getElementById(`categoria_${id}`)?.value;
                     const tipo = document.getElementById(`tipo_${id}`)?.value;
+                    const claveSIP = formData.get(`proyectos[${id}][claveSIP]`);
                     
-                    if (categoria && tipo) {
+                    if (categoria && tipo && claveSIP) {
                         proyecto.categoria = categoria;
                         proyecto.tipo = tipo;
+                        proyecto.claveSIP = claveSIP;
                         data.proyectosVigentes.push(proyecto);
                     }
                     
@@ -1455,6 +1490,7 @@
                     const categoriaExterna = formData.get(`proyectos[${id}][categoriaExterna]`);
                     const tipoExterno = formData.get(`proyectos[${id}][tipoExterno]`);
                     const descripcionExterno = formData.get(`proyectos[${id}][descripcionExterno]`);
+                    const claveSIPExterna = formData.get(`proyectos[${id}][claveSIPExterna]`);
                     
                     if (fuenteExterna && categoriaExterna && tipoExterno) {
                         proyecto.fuenteExterna = fuenteExterna;
@@ -1462,6 +1498,9 @@
                         proyecto.tipo = tipoExterno;
                         if (descripcionExterno && descripcionExterno.trim()) {
                             proyecto.descripcion = descripcionExterno;
+                        }
+                        if (claveSIPExterna && claveSIPExterna.trim()) {
+                            proyecto.claveSIP = claveSIPExterna;
                         }
                         data.proyectosVigentes.push(proyecto);
                     }
