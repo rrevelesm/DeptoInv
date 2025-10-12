@@ -67,6 +67,7 @@ logs/
 config.py
 SECRET_KEY.txt
 ADMIN_TOKEN.txt
+CREDENCIALES_ADMIN.txt
 
 # Temporary files
 *.tmp
