@@ -995,13 +995,34 @@
 
                 <div class="form-group">
                     <label>Tipo de Financiamiento <span class="required">*</span></label>
-                    <select id="financiamiento_${proyectoCount}" name="proyectos[${proyectoCount}][financiamiento]" required>
+                    <select id="financiamiento_${proyectoCount}" name="proyectos[${proyectoCount}][financiamiento]" 
+                            onchange="toggleFuenteExterna(${proyectoCount})" required>
                         <option value="">Seleccione...</option>
                         <option value="Interno IPN">Financiamiento Interno IPN</option>
                         <option value="Externo">Financiamiento Externo</option>
                     </select>
                     <div class="help-text">
                         Seleccione la fuente principal de financiamiento del proyecto
+                    </div>
+                </div>
+
+                <div class="conditional-field" id="fuenteExterna_${proyectoCount}" style="margin-left: 0; padding: 15px; background: #fff3cd; border-radius: 8px; display: none; margin-bottom: 15px;">
+                    <label>Fuente de Financiamiento Externo <span class="required">*</span></label>
+                    <select id="fuenteExterna_select_${proyectoCount}" name="proyectos[${proyectoCount}][fuenteExterna]">
+                        <option value="">Seleccione la fuente...</option>
+                        <option value="SECIHTI">SECIHTI (Secretaría de Ciencia, Humanidades, Tecnología e Innovación)</option>
+                        <option value="SECTEI">SECTEI (Secretaría de Ciencia, Tecnología e Innovación CDMX)</option>
+                        <option value="European Commission">European Commission (Comisión Europea)</option>
+                        <option value="Wellcome Foundation">Wellcome Foundation (Fundación Wellcome)</option>
+                        <option value="SAM.GOV">SAM.GOV (Subvenciones Federales EE.UU.)</option>
+                        <option value="GCRF">GCRF (Global Challenges Research Fund)</option>
+                        <option value="NIH">NIH (National Institutes of Health)</option>
+                        <option value="Otra fuente internacional">Otra fuente internacional</option>
+                        <option value="Empresa privada">Empresa privada</option>
+                        <option value="ONG/Fundación">ONG/Fundación</option>
+                    </select>
+                    <div class="help-text">
+                        Para más información: <a href="https://www.ipn.mx/investigacion/convocatorias/externos.html" target="_blank" style="color: #856404; font-weight: 600;">Proyectos Externos IPN</a>
                     </div>
                 </div>
 
@@ -1063,6 +1084,21 @@
             
             elemento.remove();
             proyectoCount--;
+        }
+
+        function toggleFuenteExterna(proyectoId) {
+            const financiamiento = document.getElementById(`financiamiento_${proyectoId}`).value;
+            const fuenteExternaDiv = document.getElementById(`fuenteExterna_${proyectoId}`);
+            const fuenteExternaSelect = document.getElementById(`fuenteExterna_select_${proyectoId}`);
+            
+            if (financiamiento === 'Externo') {
+                fuenteExternaDiv.style.display = 'block';
+                fuenteExternaSelect.required = true;
+            } else {
+                fuenteExternaDiv.style.display = 'none';
+                fuenteExternaSelect.required = false;
+                fuenteExternaSelect.value = '';
+            }
         }
 
         function actualizarTiposProyecto(proyectoId) {
@@ -1282,19 +1318,27 @@
             proyectosElements.forEach(proyectoDiv => {
                 const id = proyectoDiv.id.split('_')[1];
                 const financiamiento = formData.get(`proyectos[${id}][financiamiento]`);
+                const fuenteExterna = formData.get(`proyectos[${id}][fuenteExterna]`);
                 const categoria = document.getElementById(`categoria_${id}`)?.value;
                 const tipo = document.getElementById(`tipo_${id}`)?.value;
                 const claveSIP = formData.get(`proyectos[${id}][claveSIP]`);
                 const nombre = formData.get(`proyectos[${id}][nombre]`);
                 
                 if (financiamiento && categoria && tipo && claveSIP && nombre) {
-                    data.proyectosVigentes.push({
+                    const proyecto = {
                         financiamiento: financiamiento,
                         categoria: categoria,
                         tipo: tipo,
                         claveSIP: claveSIP,
                         nombre: nombre
-                    });
+                    };
+                    
+                    // Agregar fuente externa si aplica
+                    if (financiamiento === 'Externo' && fuenteExterna) {
+                        proyecto.fuenteExterna = fuenteExterna;
+                    }
+                    
+                    data.proyectosVigentes.push(proyecto);
                 }
             });
 
