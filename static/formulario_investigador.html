@@ -34,6 +34,24 @@
             text-align: center;
         }
 
+        .header-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .header-logo {
+            height: 80px;
+            width: auto;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
         .header h1 {
             font-size: 2rem;
             margin-bottom: 10px;
@@ -252,6 +270,10 @@
 <body>
     <div class="container">
         <div class="header">
+            <div class="header-logos">
+                <img src="logo_upiiz.png" alt="Logo UPIIZ" class="header-logo">
+                <img src="logo_ipn.png" alt="Logo IPN" class="header-logo">
+            </div>
             <h1>🎓 Formulario de Registro de Investigadores</h1>
             <p style="font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;">
                 Unidad Profesional Interdisciplinaria de Ingeniería<br>
