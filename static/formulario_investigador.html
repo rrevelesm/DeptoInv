@@ -576,19 +576,42 @@
                         </div>
 
                         <div class="conditional-field" id="ediFields">
-                            <label for="nivelEDI">Nivel EDI <span class="required">*</span></label>
-                            <select id="nivelEDI" name="nivelEDI">
-                                <option value="">Seleccione...</option>
-                                <option value="Nivel 1">Nivel 1</option>
-                                <option value="Nivel 2">Nivel 2</option>
-                                <option value="Nivel 3">Nivel 3</option>
-                                <option value="Nivel 4">Nivel 4</option>
-                                <option value="Nivel 5">Nivel 5</option>
-                                <option value="Nivel 6">Nivel 6</option>
-                                <option value="Nivel 7">Nivel 7</option>
-                                <option value="Nivel 8">Nivel 8</option>
-                                <option value="Nivel Permanente">Nivel Permanente</option>
-                            </select>
+                            <div class="form-group">
+                                <label for="nivelEDI">Nivel EDI <span class="required">*</span></label>
+                                <select id="nivelEDI" name="nivelEDI">
+                                    <option value="">Seleccione...</option>
+                                    <option value="Nivel 1">Nivel 1</option>
+                                    <option value="Nivel 2">Nivel 2</option>
+                                    <option value="Nivel 3">Nivel 3</option>
+                                    <option value="Nivel 4">Nivel 4</option>
+                                    <option value="Nivel 5">Nivel 5</option>
+                                    <option value="Nivel 6">Nivel 6</option>
+                                    <option value="Nivel 7">Nivel 7</option>
+                                    <option value="Nivel 8">Nivel 8</option>
+                                    <option value="Nivel Permanente">Nivel Permanente</option>
+                                </select>
+                                <div class="help-text">
+                                    Seleccione el nivel de Estímulo al Desempeño de los Investigadores
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ediInicio">Fecha de Inicio <span class="required">*</span></label>
+                                    <input type="date" id="ediInicio" name="ediInicio">
+                                    <div class="help-text">
+                                        Inicio de vigencia del período actual
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="ediFinal">Fecha de Término <span class="required">*</span></label>
+                                    <input type="date" id="ediFinal" name="ediFinal">
+                                    <div class="help-text">
+                                        Generalmente 2 años después del inicio
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1416,14 +1439,22 @@
         function toggleEDI(show) {
             const ediFields = document.getElementById('ediFields');
             const nivelEDI = document.getElementById('nivelEDI');
+            const ediInicio = document.getElementById('ediInicio');
+            const ediFinal = document.getElementById('ediFinal');
             
             if (show) {
                 ediFields.classList.add('active');
                 nivelEDI.required = true;
+                ediInicio.required = true;
+                ediFinal.required = true;
             } else {
                 ediFields.classList.remove('active');
                 nivelEDI.required = false;
+                ediInicio.required = false;
+                ediFinal.required = false;
                 nivelEDI.value = '';
+                ediInicio.value = '';
+                ediFinal.value = '';
             }
         }
 
