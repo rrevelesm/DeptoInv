@@ -57,10 +57,16 @@ instance/
 
 # Logs
 *.log
+logs/
 
 # Environment variables
 .env
 .flaskenv
+
+# Configuración de seguridad (NO subir)
+config.py
+SECRET_KEY.txt
+ADMIN_TOKEN.txt
 
 # Temporary files
 *.tmp

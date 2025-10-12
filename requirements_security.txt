@@ -1,0 +1,43 @@
+# 🔒 Dependencias de Seguridad
+# Instalar con: pip install -r requirements_security.txt
+
+# Rate Limiting - Protección contra DDoS y fuerza bruta
+Flask-Limiter==3.5.0
+
+# Variables de entorno seguras
+python-dotenv==1.0.0
+
+# Validación de datos
+email-validator==2.1.0
+validators==0.22.0
+
+# Logging mejorado
+python-json-logger==2.0.7
+
+# Encriptación (para datos sensibles)
+cryptography==41.0.7
+
+# Protección CSRF
+Flask-WTF==1.2.1
+
+# Headers de seguridad
+Flask-Talisman==1.1.0
+
+# Sanitización HTML
+bleach==6.1.0
+
+# Firmas digitales
+itsdangerous==2.1.2
+
+# Hashing seguro de contraseñas (si implementas login)
+bcrypt==4.1.2
+argon2-cffi==23.1.0
+
+# Monitoreo y alertas (opcional)
+sentry-sdk[flask]==1.38.0
+
+# NOTAS DE INSTALACIÓN:
+# 1. Actualiza primero pip: pip install --upgrade pip
+# 2. Instala las dependencias: pip install -r requirements_security.txt
+# 3. Verifica: pip list
+
