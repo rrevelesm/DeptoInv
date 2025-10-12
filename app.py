@@ -1,7 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 from models import (
     init_db, get_session, Investigador, SNII, Proyecto, Publicacion,
     investigador_proyecto, investigador_publicacion
@@ -9,6 +7,16 @@ from models import (
 from datetime import datetime
 import os
 import secrets
+
+# Intentar importar Flask-Limiter (opcional)
+try:
+    from flask_limiter import Limiter
+    from flask_limiter.util import get_remote_address
+    LIMITER_AVAILABLE = True
+except ImportError:
+    LIMITER_AVAILABLE = False
+    print("⚠️  Flask-Limiter no instalado - Rate limiting desactivado")
+    print("⚠️  Instala con: pip install Flask-Limiter")
 
 # Importar utilidades de seguridad
 from security_utils import (
@@ -37,13 +45,22 @@ CORS(app, resources={
     }
 })
 
-# Rate Limiting - Protección contra DDoS y spam
-limiter = Limiter(
-    app=app,
-    key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"],
-    storage_uri="memory://"
-)
+# Rate Limiting - Protección contra DDoS y spam (si está disponible)
+if LIMITER_AVAILABLE:
+    limiter = Limiter(
+        app=app,
+        key_func=get_remote_address,
+        default_limits=["200 per day", "50 per hour"],
+        storage_uri="memory://"
+    )
+else:
+    # Decorador dummy si no está Flask-Limiter
+    class DummyLimiter:
+        def limit(self, *args, **kwargs):
+            def decorator(f):
+                return f
+            return decorator
+    limiter = DummyLimiter()
 
 # Inicializar base de datos
 init_db()
@@ -754,13 +771,20 @@ if __name__ == '__main__':
     print("="*60)
     print("🔒 SERVIDOR INICIANDO CON SEGURIDAD")
     print("="*60)
-    print(f"🛡️  Rate Limiting: Activado (5 formularios/hora)")
-    print(f"🔐 Autenticación: Requerida en rutas admin")
-    print(f"✅ Validación: Activada (CURP, email, archivos)")
-    print(f"🔒 CORS: Restringido a localhost")
+    if LIMITER_AVAILABLE:
+        print(f"🛡️  Rate Limiting: ✅ Activado (5 formularios/hora)")
+    else:
+        print(f"⚠️  Rate Limiting: ❌ DESACTIVADO (instalar Flask-Limiter)")
+    print(f"🔐 Autenticación: ✅ Requerida en rutas admin")
+    print(f"✅ Validación: ✅ Activada (CURP, email, archivos)")
+    print(f"🔒 CORS: ✅ Restringido a localhost")
     print(f"⚙️  Debug Mode: {'ACTIVADO ⚠️' if DEBUG_MODE else 'DESACTIVADO ✅'}")
     if DEBUG_MODE:
         print("⚠️  ADVERTENCIA: Debug activo - NO usar en producción")
+    if not LIMITER_AVAILABLE:
+        print("")
+        print("⚠️  INSTALA FLASK-LIMITER:")
+        print("   pip install Flask-Limiter")
     print("="*60)
     print(f"📡 Servidor: http://127.0.0.1:5000")
     print(f"📋 Formulario: http://127.0.0.1:5000/formulario")
