@@ -1,0 +1,92 @@
+============================================================
+COMANDOS PARA PYTHONANYWHERE - Copiar y pegar UNO POR UNO
+============================================================
+
+ESTAS EN: ~/DeptoInv/formularios (main)$
+
+============================================================
+PASO 1: Regresar a la carpeta principal
+============================================================
+
+cd ~/DeptoInv
+
+============================================================
+PASO 2: Actualizar código desde GitHub
+============================================================
+
+git pull origin main
+
+============================================================
+PASO 3: Crear archivo config.py con tus claves
+============================================================
+
+cat > config.py << 'EOF'
+# Configuración de seguridad
+import os
+
+SECRET_KEY = '639ac203822bedb51b6d19a9a562c7a3c449fe0fd2d46368bc03ea2c227c6934'
+ADMIN_TOKEN = 'bRIWynRiD-kz0KsyHtrgvuyEbQtBgNXBaGqWlOX1cIU'
+DEBUG = False
+ALLOWED_ORIGINS = [
+    'http://127.0.0.1:5000',
+    'http://localhost:5000',
+    'https://upiizinvestigacion.pythonanywhere.com'
+]
+EOF
+
+============================================================
+PASO 4: Crear carpeta de logs
+============================================================
+
+mkdir -p logs
+
+============================================================
+PASO 5: Instalar dependencias nuevas (opcional)
+============================================================
+
+pip3.10 install --user Flask-Limiter
+
+============================================================
+PASO 6: AHORA VE A LA PESTAÑA "WEB" EN PYTHONANYWHERE
+============================================================
+
+1. Click en la pestaña "Web" arriba
+2. Click en el botón verde grande:
+   "Reload upiizinvestigacion.pythonanywhere.com"
+3. Espera 10 segundos
+
+============================================================
+PASO 7: ACCEDE AL PANEL ADMIN
+============================================================
+
+Abre en tu navegador:
+
+https://upiizinvestigacion.pythonanywhere.com/admin-login
+
+Ingresa tu token:
+bRIWynRiD-kz0KsyHtrgvuyEbQtBgNXBaGqWlOX1cIU
+
+¡LISTO! Verás los 5 formularios de forma gráfica
+
+============================================================
+URLS IMPORTANTES:
+============================================================
+
+Panel Admin (con login):
+https://upiizinvestigacion.pythonanywhere.com/admin-login
+
+Formulario público (para compartir):
+https://upiizinvestigacion.pythonanywhere.com/formulario
+
+============================================================
+FORMULARIOS QUE TIENES REGISTRADOS: 5
+============================================================
+
+1. investigador_131140_20251013_143526.json
+2. investigador_131171_20251013_173004.json
+3. investigador_170184_20251013_145852.json
+4. investigador_180159_20251013_151050.json
+5. investigador_210202_20251013_174915.json
+
+============================================================
+
