@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Investigadores UPIIZ</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #6B1F3D 0%, #8B2F4D 100%);
+            color: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .admin-header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-export {
+            background: #D4AF37;
+            color: #333;
+        }
+
+        .btn-export:hover {
+            background: #f4cf57;
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .stat-card .number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #6B1F3D;
+        }
+
+        .filters-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .filters-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filters-row input,
+        .filters-row select {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .filters-row input {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .formulario-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 5px solid #6B1F3D;
+            transition: transform 0.2s;
+        }
+
+        .formulario-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .formulario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .formulario-titulo {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B1F3D;
+        }
+
+        .formulario-fecha {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #555;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #6B1F3D;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .empty-state h2 {
+            color: #6B1F3D;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #666;
+        }
+
+        .proyectos-list, .lineas-list, .pubs-list {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .proyectos-list li, .lineas-list li, .pubs-list li {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .error-panel {
+            background: #ff4444;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="admin-header-content">
+            <h1>🎓 Panel Administrativo - Investigadores UPIIZ</h1>
+            <div class="admin-actions">
+                <button class="btn btn-export" onclick="descargarExcel()">
+                    📥 Descargar Excel
+                </button>
+                <button class="btn btn-logout" onclick="cerrarSesion()">
+                    🚪 Salir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Estadísticas -->
+        <div class="stats-panel" id="statsPanel">
+            <div class="stat-card">
+                <h3>Total Registros</h3>
+                <div class="number" id="totalRegistros">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Con Proyecto</h3>
+                <div class="number" id="conProyecto">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Con EDI</h3>
+                <div class="number" id="conEDI">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Con SNII</h3>
+                <div class="number" id="conSNII">0</div>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filters-panel">
+            <div class="filters-row">
+                <input type="text" 
+                       id="searchInput" 
+                       placeholder="🔍 Buscar por nombre, CURP, clave..."
+                       onkeyup="filtrarFormularios()">
+                <select id="filtroProyecto" onchange="filtrarFormularios()">
+                    <option value="">Todos (Proyecto)</option>
+                    <option value="Si">Con Proyecto</option>
+                    <option value="No">Sin Proyecto</option>
+                </select>
+                <select id="filtroEDI" onchange="filtrarFormularios()">
+                    <option value="">Todos (EDI)</option>
+                    <option value="Si">Con EDI</option>
+                    <option value="No">Sin EDI</option>
+                </select>
+                <select id="filtroSNII" onchange="filtrarFormularios()">
+                    <option value="">Todos (SNII)</option>
+                    <option value="Si">Con SNII</option>
+                    <option value="No">Sin SNII</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Error Panel -->
+        <div id="errorPanel" class="error-panel" style="display: none;"></div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Cargando formularios...</p>
+        </div>
+
+        <!-- Formularios -->
+        <div id="formulariosContainer"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <h2>📋 No hay formularios registrados</h2>
+            <p>Aún no se han recibido respuestas de los investigadores.</p>
+            <p style="margin-top: 20px;">
+                <a href="/formulario" class="btn btn-export">Ver Formulario Público</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let todosFormularios = [];
+        let adminToken = '';
+
+        // Verificar autenticación al cargar
+        window.addEventListener('load', () => {
+            adminToken = sessionStorage.getItem('adminToken');
+            
+            if (!adminToken) {
+                // No hay token, redirigir a login
+                window.location.href = '/admin-login';
+                return;
+            }
+
+            // Cargar formularios
+            cargarFormularios();
+        });
+
+        async function cargarFormularios() {
+            const loading = document.getElementById('loading');
+            const formulariosContainer = document.getElementById('formulariosContainer');
+            const errorPanel = document.getElementById('errorPanel');
+            const emptyState = document.getElementById('emptyState');
+
+            loading.style.display = 'block';
+            errorPanel.style.display = 'none';
+            emptyState.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/formularios-lista', {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // Token inválido
+                        sessionStorage.removeItem('adminToken');
+                        window.location.href = '/admin-login';
+                        return;
+                    }
+                    throw new Error('Error al cargar formularios');
+                }
+
+                const formularios = await response.json();
+                todosFormularios = formularios;
+
+                loading.style.display = 'none';
+
+                if (formularios.length === 0) {
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                // Actualizar estadísticas
+                actualizarEstadisticas(formularios);
+
+                // Mostrar formularios
+                mostrarFormularios(formularios);
+
+            } catch (error) {
+                loading.style.display = 'none';
+                errorPanel.textContent = `❌ Error: ${error.message}`;
+                errorPanel.style.display = 'block';
+            }
+        }
+
+        function actualizarEstadisticas(formularios) {
+            document.getElementById('totalRegistros').textContent = formularios.length;
+            
+            const conProyecto = formularios.filter(f => f.tieneProyectoVigente === 'Si').length;
+            document.getElementById('conProyecto').textContent = conProyecto;
+            
+            const conEDI = formularios.filter(f => f.cuentaBecaEDI === 'Si').length;
+            document.getElementById('conEDI').textContent = conEDI;
+            
+            const conSNII = formularios.filter(f => f.cuentaSNII === 'Si').length;
+            document.getElementById('conSNII').textContent = conSNII;
+        }
+
+        function mostrarFormularios(formularios) {
+            const container = document.getElementById('formulariosContainer');
+            container.innerHTML = '';
+
+            formularios.forEach((form, index) => {
+                const card = crearFormularioCard(form, index + 1);
+                container.appendChild(card);
+            });
+        }
+
+        function crearFormularioCard(form, numero) {
+            const card = document.createElement('div');
+            card.className = 'formulario-card';
+            card.setAttribute('data-search', JSON.stringify(form).toLowerCase());
+
+            // Formatear fecha
+            const fecha = form.timestamp ? new Date(form.timestamp).toLocaleString('es-MX') : 'N/A';
+
+            // Nombre completo (manejar formato nuevo y viejo)
+            const nombreCompleto = form.nombreCompleto || 
+                                   `${form.nombres || ''} ${form.apellidoPaterno || ''} ${form.apellidoMaterno || ''}`.trim();
+
+            card.innerHTML = `
+                <div class="formulario-header">
+                    <div>
+                        <div class="formulario-titulo">#${numero} - ${nombreCompleto}</div>
+                        <div class="formulario-fecha">📅 ${fecha}</div>
+                    </div>
+                    <div>
+                        ${form.tieneProyectoVigente === 'Si' ? '<span class="badge badge-success">Proyecto</span>' : ''}
+                        ${form.cuentaBecaEDI === 'Si' ? '<span class="badge badge-info">EDI</span>' : ''}
+                        ${form.cuentaSNII === 'Si' ? '<span class="badge badge-warning">SNII</span>' : ''}
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">👤 CURP</div>
+                        <div class="info-value">${form.curp || 'N/A'}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">🆔 Clave Empleado</div>
+                        <div class="info-value">${form.claveEmpleado || 'N/A'}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">📧 Email</div>
+                        <div class="info-value">${form.correoInstitucional || 'N/A'}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">📱 Teléfono</div>
+                        <div class="info-value">${form.aceptaContacto === 'Si' ? (form.telefonoCelular || 'N/A') : 'No proporcionado'}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">🎓 Categoría</div>
+                        <div class="info-value">${form.categoria || 'N/A'}</div>
+                    </div>
+                    ${form.tipoPlaza ? `
+                    <div class="info-item">
+                        <div class="info-label">💼 Tipo de Plaza</div>
+                        <div class="info-value">${form.tipoPlaza}</div>
+                    </div>
+                    ` : ''}
+                    ${form.horasContratacion ? `
+                    <div class="info-item">
+                        <div class="info-label">⏰ Horas</div>
+                        <div class="info-value">${form.horasContratacion}</div>
+                    </div>
+                    ` : ''}
+                </div>
+
+                ${form.cuentaBecaEDI === 'Si' ? `
+                <div class="info-item" style="margin-top: 15px;">
+                    <div class="info-label">🏆 Beca EDI</div>
+                    <div class="info-value">
+                        Nivel: ${form.nivelEDI || 'N/A'}
+                        ${form.ediInicio ? `<br>Período: ${form.ediInicio} a ${form.ediFinal || 'N/A'}` : ''}
+                    </div>
+                </div>
+                ` : ''}
+
+                ${form.cuentaSNII === 'Si' ? `
+                <div class="info-item" style="margin-top: 15px;">
+                    <div class="info-label">🌟 SNII</div>
+                    <div class="info-value">
+                        Nivel: ${form.nivelSNII || 'N/A'}<br>
+                        Vigencia: ${form.sniiInicio || 'N/A'} a ${form.sniiFinal || 'N/A'}
+                    </div>
+                </div>
+                ` : ''}
+
+                ${form.orcid ? `
+                <div class="info-item" style="margin-top: 15px;">
+                    <div class="info-label">🔗 ORCID</div>
+                    <div class="info-value">
+                        <a href="https://orcid.org/${form.orcid}" target="_blank">${form.orcid}</a>
+                    </div>
+                </div>
+                ` : ''}
+
+                ${form.proyectosVigentes && form.proyectosVigentes.length > 0 ? `
+                <div class="info-item" style="margin-top: 15px;">
+                    <div class="info-label">📊 Proyectos Vigentes</div>
+                    <ul class="proyectos-list">
+                        ${form.proyectosVigentes.map(p => `
+                            <li>
+                                <strong>${p.categoria || 'N/A'}</strong>: ${p.nombre || 'Sin nombre'}
+                                ${p.claveSip ? `<br>Clave SIP: ${p.claveSip}` : ''}
+                                ${p.tipo ? `<br>Tipo: ${p.tipo}` : ''}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+
+                ${form.lineasInvestigacion && form.lineasInvestigacion.length > 0 ? `
+                <div class="info-item" style="margin-top: 15px;">
+                    <div class="info-label">🔬 Líneas de Investigación</div>
+                    <ul class="lineas-list">
+                        ${form.lineasInvestigacion.map(l => `<li>${l}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+
+                ${form.publicaciones2025 && form.publicaciones2025.length > 0 ? `
+                <div class="info-item" style="margin-top: 15px;">
+                    <div class="info-label">📚 Publicaciones 2025</div>
+                    <ul class="pubs-list">
+                        ${form.publicaciones2025.map(p => `
+                            <li>
+                                <strong>${p.tipo || 'N/A'}</strong>
+                                ${p.doi ? `<br>DOI: <a href="https://doi.org/${p.doi}" target="_blank">${p.doi}</a>` : ''}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+            `;
+
+            return card;
+        }
+
+        function filtrarFormularios() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const filtroProyecto = document.getElementById('filtroProyecto').value;
+            const filtroEDI = document.getElementById('filtroEDI').value;
+            const filtroSNII = document.getElementById('filtroSNII').value;
+
+            const formulariosFiltrados = todosFormularios.filter(form => {
+                // Filtro de búsqueda
+                const searchMatch = !searchText || 
+                    JSON.stringify(form).toLowerCase().includes(searchText);
+
+                // Filtro de proyecto
+                const proyectoMatch = !filtroProyecto || 
+                    form.tieneProyectoVigente === filtroProyecto;
+
+                // Filtro de EDI
+                const ediMatch = !filtroEDI || 
+                    form.cuentaBecaEDI === filtroEDI;
+
+                // Filtro de SNII
+                const sniiMatch = !filtroSNII || 
+                    form.cuentaSNII === filtroSNII;
+
+                return searchMatch && proyectoMatch && ediMatch && sniiMatch;
+            });
+
+            mostrarFormularios(formulariosFiltrados);
+
+            // Actualizar contador
+            document.getElementById('totalRegistros').textContent = formulariosFiltrados.length;
+        }
+
+        async function descargarExcel() {
+            const btn = event.target;
+            const textoOriginal = btn.textContent;
+            
+            btn.textContent = '⏳ Generando...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/exportar-formularios-excel', {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al generar Excel');
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Formularios_UPIIZ_${new Date().toISOString().split('T')[0]}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+
+                btn.textContent = '✅ Descargado';
+                setTimeout(() => {
+                    btn.textContent = textoOriginal;
+                    btn.disabled = false;
+                }, 2000);
+
+            } catch (error) {
+                alert('Error al descargar Excel: ' + error.message);
+                btn.textContent = textoOriginal;
+                btn.disabled = false;
+            }
+        }
+
+        function cerrarSesion() {
+            if (confirm('¿Seguro que deseas cerrar sesión?')) {
+                sessionStorage.removeItem('adminToken');
+                window.location.href = '/admin-login';
+            }
+        }
+    </script>
+</body>
+</html>
+

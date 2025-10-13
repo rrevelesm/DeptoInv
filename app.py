@@ -70,10 +70,19 @@ init_db()
 def formulario():
     return send_from_directory('static', 'formulario_investigador.html')
 
-# Ruta para el panel de formularios
+# Ruta para el panel de formularios (antiguo)
 @app.route('/panel-formularios')
 def panel_formularios():
     return send_from_directory('static', 'panel_formularios.html')
+
+# 🔐 Rutas de autenticación y panel admin
+@app.route('/admin-login')
+def admin_login():
+    return send_from_directory('static', 'admin_login.html')
+
+@app.route('/panel-admin')
+def panel_admin():
+    return send_from_directory('static', 'panel_admin.html')
 
 # API para listar formularios recibidos
 @app.route('/api/formularios-lista', methods=['GET'])
