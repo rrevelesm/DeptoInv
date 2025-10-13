@@ -440,7 +440,7 @@
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group">
+                    <div class="form-group">
                             <label for="fechaIngresoIPN">Fecha de Ingreso al IPN <span class="required">*</span></label>
                             <input type="date" id="fechaIngresoIPN" name="fechaIngresoIPN" required>
                             <div class="help-text">
@@ -450,12 +450,12 @@
 
                         <div class="form-group">
                             <label for="cvu">CVU (antes CONACYT)</label>
-                            <input type="text" id="cvu" name="cvu" 
-                                   placeholder="7 dígitos"
-                                   maxlength="7"
-                                   pattern="[0-9]{7}">
-                            <div class="help-text">
-                                Opcional
+                        <input type="text" id="cvu" name="cvu" 
+                                   placeholder="6 o 7 dígitos"
+                               maxlength="7"
+                                   pattern="[0-9]{6,7}">
+                        <div class="help-text">
+                                Opcional - Acepta CVU de 6 dígitos (antiguo) o 7 dígitos (actual)
                             </div>
                         </div>
                     </div>
@@ -610,19 +610,19 @@
 
                         <div class="conditional-field" id="ediFields">
                             <div class="form-group">
-                                <label for="nivelEDI">Nivel EDI <span class="required">*</span></label>
-                                <select id="nivelEDI" name="nivelEDI">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Nivel 1">Nivel 1</option>
-                                    <option value="Nivel 2">Nivel 2</option>
-                                    <option value="Nivel 3">Nivel 3</option>
-                                    <option value="Nivel 4">Nivel 4</option>
-                                    <option value="Nivel 5">Nivel 5</option>
-                                    <option value="Nivel 6">Nivel 6</option>
-                                    <option value="Nivel 7">Nivel 7</option>
-                                    <option value="Nivel 8">Nivel 8</option>
-                                    <option value="Nivel Permanente">Nivel Permanente</option>
-                                </select>
+                            <label for="nivelEDI">Nivel EDI <span class="required">*</span></label>
+                            <select id="nivelEDI" name="nivelEDI">
+                                <option value="">Seleccione...</option>
+                                <option value="Nivel 1">Nivel 1</option>
+                                <option value="Nivel 2">Nivel 2</option>
+                                <option value="Nivel 3">Nivel 3</option>
+                                <option value="Nivel 4">Nivel 4</option>
+                                <option value="Nivel 5">Nivel 5</option>
+                                <option value="Nivel 6">Nivel 6</option>
+                                <option value="Nivel 7">Nivel 7</option>
+                                <option value="Nivel 8">Nivel 8</option>
+                                <option value="Nivel Permanente">Nivel Permanente</option>
+                            </select>
                                 <div class="help-text">
                                     Seleccione el nivel de Estímulo al Desempeño de los Investigadores
                                 </div>
