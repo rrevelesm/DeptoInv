@@ -210,13 +210,26 @@ def exportar_excel_endpoint():
                         pubs_texto.append(f"{pub.get('tipo', 'N/A')}: {pub.get('doi', 'N/A')}")
                 pubs_str = '\n'.join(pubs_texto) if pubs_texto else 'Sin publicaciones 2025'
                 
+                # Construir nombre completo (manejar formato nuevo y viejo)
+                nombre_completo = datos.get('nombreCompleto')
+                if not nombre_completo or nombre_completo == 'N/A':
+                    # Formato antiguo: nombres, apellidoPaterno, apellidoMaterno separados
+                    nombres = datos.get('nombres', '')
+                    apellido_pat = datos.get('apellidoPaterno', '')
+                    apellido_mat = datos.get('apellidoMaterno', '')
+                    nombre_completo = f"{nombres} {apellido_pat} {apellido_mat}".strip()
+                
                 fila = {
-                    'Nombre Completo': datos.get('nombreCompleto', ''),
+                    'Nombre Completo': nombre_completo or 'N/A',
                     'CURP': datos.get('curp', ''),
                     'Fecha Nacimiento': datos.get('fechaNacimiento', ''),
                     'Género': datos.get('genero', ''),
                     'Clave Empleado': datos.get('claveEmpleado', ''),
                     'Categoría': datos.get('categoria', ''),
+                    'Tipo Plaza': datos.get('tipoPlaza', ''),
+                    'Horas Contratación': datos.get('horasContratacion', ''),
+                    'Fecha Ingreso IPN': datos.get('fechaIngresoIPN', ''),
+                    'CVU': datos.get('cvu', ''),
                     'Correo Institucional': datos.get('correoInstitucional', ''),
                     'Teléfono': datos.get('telefonoCelular', '') if datos.get('aceptaContacto') == 'Si' else 'N/A',
                     'Tiene Proyecto': datos.get('tieneProyectoVigente', 'No'),
