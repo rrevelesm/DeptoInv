@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargar Formularios - UPIIZ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6B1F3D 0%, #8B2F4D 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #6B1F3D;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .token-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .token-input:focus {
+            outline: none;
+            border-color: #6B1F3D;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #6B1F3D 0%, #8B2F4D 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 31, 61, 0.4);
+        }
+
+        .btn-download:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-excel {
+            background: #D4AF37;
+            color: #333;
+        }
+
+        .btn-excel:hover {
+            background: #f4cf57;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .help-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📥</div>
+        <h1>Descargar Formularios</h1>
+        <p>Departamento de Investigación - UPIIZ</p>
+
+        <input type="password" 
+               id="tokenInput" 
+               class="token-input" 
+               placeholder="Ingresa tu token de admin">
+
+        <div>
+            <button class="btn-download" onclick="descargarZIP()">
+                📦 Descargar ZIP (JSON)
+            </button>
+            <button class="btn-download btn-excel" onclick="descargarExcel()">
+                📊 Descargar Excel
+            </button>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div class="help-text">
+            <strong>💡 Instrucciones:</strong><br>
+            1. Ingresa tu token de admin<br>
+            2. Clic en el botón de descarga que prefieras<br>
+            3. El archivo se descargará automáticamente<br><br>
+            <strong>📦 ZIP:</strong> Archivos JSON originales<br>
+            <strong>📊 Excel:</strong> Datos organizados en tabla
+        </div>
+    </div>
+
+    <script>
+        const tokenInput = document.getElementById('tokenInput');
+        const message = document.getElementById('message');
+
+        async function descargarZIP() {
+            const token = tokenInput.value.trim();
+            
+            if (!token) {
+                mostrarMensaje('Por favor ingresa el token de admin', 'error');
+                return;
+            }
+
+            const btn = event.target;
+            const textoOriginal = btn.textContent;
+            btn.textContent = '⏳ Descargando...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/descargar-formularios-zip', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        throw new Error('Token inválido');
+                    }
+                    throw new Error('Error al generar ZIP');
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Formularios_UPIIZ_${new Date().toISOString().split('T')[0]}.zip`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+
+                mostrarMensaje('✅ ZIP descargado correctamente', 'success');
+                btn.textContent = textoOriginal;
+                btn.disabled = false;
+
+            } catch (error) {
+                mostrarMensaje('❌ ' + error.message, 'error');
+                btn.textContent = textoOriginal;
+                btn.disabled = false;
+            }
+        }
+
+        async function descargarExcel() {
+            const token = tokenInput.value.trim();
+            
+            if (!token) {
+                mostrarMensaje('Por favor ingresa el token de admin', 'error');
+                return;
+            }
+
+            const btn = event.target;
+            const textoOriginal = btn.textContent;
+            btn.textContent = '⏳ Descargando...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/exportar-formularios-excel', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        throw new Error('Token inválido');
+                    }
+                    throw new Error('Error al generar Excel');
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Formularios_UPIIZ_${new Date().toISOString().split('T')[0]}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+
+                mostrarMensaje('✅ Excel descargado correctamente', 'success');
+                btn.textContent = textoOriginal;
+                btn.disabled = false;
+
+            } catch (error) {
+                mostrarMensaje('❌ ' + error.message, 'error');
+                btn.textContent = textoOriginal;
+                btn.disabled = false;
+            }
+        }
+
+        function mostrarMensaje(texto, tipo) {
+            message.textContent = texto;
+            message.className = `message ${tipo}`;
+            message.style.display = 'block';
+            
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+

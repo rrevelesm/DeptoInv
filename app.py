@@ -84,6 +84,10 @@ def admin_login():
 def panel_admin():
     return send_from_directory('static', 'panel_admin.html')
 
+@app.route('/descargar')
+def descargar_formularios_page():
+    return send_from_directory('static', 'descargar_formularios.html')
+
 # API para listar formularios recibidos
 @app.route('/api/formularios-lista', methods=['GET'])
 @require_auth  # 🔒 Protegido - requiere token de admin
@@ -113,6 +117,50 @@ def listar_formularios():
         formularios.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
         
         return jsonify(formularios)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+# API para descargar formularios como ZIP
+@app.route('/api/descargar-formularios-zip', methods=['GET'])
+@require_auth  # 🔒 Protegido - requiere token de admin
+@limiter.limit("10 per hour")  # Límite de descargas
+def descargar_formularios_zip():
+    """Descarga todos los formularios JSON en un archivo ZIP"""
+    import zipfile
+    import io
+    from flask import send_file
+    from datetime import datetime as dt
+    
+    try:
+        formularios_dir = 'formularios'
+        if not os.path.exists(formularios_dir):
+            return jsonify({'error': 'No hay formularios'}), 404
+        
+        archivos = [f for f in os.listdir(formularios_dir) if f.endswith('.json')]
+        
+        if not archivos:
+            return jsonify({'error': 'No hay formularios para descargar'}), 404
+        
+        # Crear archivo ZIP en memoria
+        memory_file = io.BytesIO()
+        
+        with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
+            for archivo in archivos:
+                ruta = os.path.join(formularios_dir, archivo)
+                zf.write(ruta, archivo)
+        
+        memory_file.seek(0)
+        
+        # Nombre del archivo con timestamp
+        timestamp = dt.now().strftime('%Y%m%d_%H%M%S')
+        nombre_zip = f'Formularios_UPIIZ_{timestamp}.zip'
+        
+        return send_file(
+            memory_file,
+            mimetype='application/zip',
+            as_attachment=True,
+            download_name=nombre_zip
+        )
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 

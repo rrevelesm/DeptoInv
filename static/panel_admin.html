@@ -285,6 +285,9 @@
                 <button class="btn btn-export" onclick="descargarExcel()">
                     📥 Descargar Excel
                 </button>
+                <button class="btn btn-export" onclick="descargarZIP()" style="background: #28a745;">
+                    📦 Descargar ZIP
+                </button>
                 <button class="btn btn-logout" onclick="cerrarSesion()">
                     🚪 Salir
                 </button>
@@ -650,6 +653,47 @@
 
             } catch (error) {
                 alert('Error al descargar Excel: ' + error.message);
+                btn.textContent = textoOriginal;
+                btn.disabled = false;
+            }
+        }
+
+        async function descargarZIP() {
+            const btn = event.target;
+            const textoOriginal = btn.textContent;
+            
+            btn.textContent = '⏳ Creando ZIP...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/descargar-formularios-zip', {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al generar ZIP');
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Formularios_UPIIZ_${new Date().toISOString().split('T')[0]}.zip`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+
+                btn.textContent = '✅ Descargado';
+                setTimeout(() => {
+                    btn.textContent = textoOriginal;
+                    btn.disabled = false;
+                }, 2000);
+
+            } catch (error) {
+                alert('Error al descargar ZIP: ' + error.message);
                 btn.textContent = textoOriginal;
                 btn.disabled = false;
             }
