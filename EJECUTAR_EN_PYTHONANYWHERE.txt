@@ -1,0 +1,176 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║    🔧 SOLUCIÓN DEFINITIVA - EJECUTAR EN PYTHONANYWHERE                       ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ⚡ SOLUCIÓN RÁPIDA (COPIA Y PEGA ESTO EN BASH)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Ve a: https://www.pythonanywhere.com/user/upiizinvestigacion/consoles/
+  
+  2. Abre una consola "Bash"
+  
+  3. COPIA Y PEGA estos comandos (UNO POR UNO):
+
+
+cd ~/DeptoInv
+
+
+git fetch --all
+
+
+git reset --hard origin/main
+
+
+python3.10 diagnostico_pythonanywhere.py
+
+
+  4. Lee el resultado del diagnóstico
+  
+  5. Si todo está [OK], ve a:
+     https://www.pythonanywhere.com/web_app_setup/upiizinvestigacion.pythonanywhere.com/
+  
+  6. Clic en el botón verde "Reload"
+  
+  7. Espera 20 segundos
+  
+  8. Accede a: https://upiizinvestigacion.pythonanywhere.com/admin-login
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🎯 SI EL DIAGNÓSTICO MUESTRA ERRORES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ERROR: "No such file: admin_login.html"
+  ───────────────────────────────────────
+  
+  Ejecuta:
+  
+  cd ~/DeptoInv
+  git pull origin main
+  ls static/admin*.html
+  
+  
+  ERROR: "ModuleNotFoundError: No module named 'flask_limiter'"
+  ─────────────────────────────────────────────────────────────
+  
+  Ejecuta:
+  
+  pip3.10 install --user flask-limiter
+  
+  
+  ERROR: "ModuleNotFoundError: No module named 'config'"
+  ─────────────────────────────────────────────────────
+  
+  Verifica que config.py exista:
+  
+  ls -la config.py
+  
+  Si no existe, créalo con:
+  
+  cat > config.py << 'EOF'
+SECRET_KEY = '639ac203822bedb51b6d19a9a562c7a3c449fe0fd2d46368bc03ea2c227c6934'
+ADMIN_TOKEN = 'bRIWynRiD-kz0KsyHtrgvuyEbQtBgNXBaGqWlOX1cIU'
+DEBUG = False
+EOF
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔥 SOLUCIÓN DEFINITIVA (SI NADA FUNCIONA)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Borrar todo y volver a clonar:
+  
+  cd ~
+  mv DeptoInv DeptoInv_backup
+  git clone https://github.com/rrevelesm/DeptoInv.git
+  cd DeptoInv
+  pip3.10 install --user flask flask-cors sqlalchemy pandas openpyxl flask-limiter
+  
+  Luego: Web → Reload
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📊 VERIFICAR QUE EL WSGI ESTÉ CORRECTO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Ve a: Web → Code
+  
+  2. Clic en el archivo WSGI
+  
+  3. Debe contener EXACTAMENTE esto:
+  
+  ┌────────────────────────────────────────────────────────────────┐
+  │ import sys                                                     │
+  │ import os                                                      │
+  │                                                                │
+  │ project_home = '/home/upiizinvestigacion/DeptoInv'           │
+  │ if project_home not in sys.path:                              │
+  │     sys.path.insert(0, project_home)                          │
+  │                                                                │
+  │ os.environ['FLASK_APP'] = 'app.py'                            │
+  │ os.environ['DEBUG'] = 'False'                                 │
+  │                                                                │
+  │ from app import app as application                            │
+  └────────────────────────────────────────────────────────────────┘
+  
+  4. Si es diferente, BORRA TODO y pega lo de arriba
+  
+  5. Guarda (Save)
+  
+  6. Reload
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔍 VER LOGS DE ERROR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  En la consola Bash:
+  
+  tail -50 /var/log/upiizinvestigacion.pythonanywhere.com.error.log
+  
+  Esto muestra los últimos 50 errores.
+  Copia el error y búscalo en Google o dímelo.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✅ CHECKLIST COMPLETO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [ ] Estoy en el directorio correcto (cd ~/DeptoInv)
+  [ ] Hice git pull (o git reset --hard origin/main)
+  [ ] Los archivos admin_login.html y panel_admin.html existen
+  [ ] El archivo WSGI está configurado correctamente
+  [ ] Instalé todas las dependencias (pip3.10 install...)
+  [ ] Hice Reload del sitio web
+  [ ] Esperé al menos 15 segundos después del Reload
+  [ ] Revisé el error log
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🆘 SI NADA FUNCIONA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  EJECUTA ESTOS COMANDOS Y CÓPIAME EL RESULTADO:
+  
+  cd ~/DeptoInv
+  pwd
+  ls -la static/admin*.html
+  grep "admin-login" app.py
+  python3.10 -c "from app import app; print('OK')"
+  
+  Con esa información te diré EXACTAMENTE qué está mal.
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║  ⚡ Ejecuta estos comandos en PythonAnywhere Bash                            ║
+║  📋 El script de diagnóstico te dirá exactamente qué falta                   ║
+║  🔧 Sigue las instrucciones del diagnóstico                                  ║
+║  ✅ Luego Reload y listo                                                     ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+
