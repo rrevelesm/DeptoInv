@@ -1,0 +1,169 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║    🔧 AGREGAR PANEL ADMIN A TU PYTHONANYWHERE EXISTENTE                      ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📊 SITUACIÓN ACTUAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ✅ Tienes el formulario funcionando
+  ❌ Falta el panel de administración
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🚀 MÉTODO RÁPIDO: SUBIR SOLO LOS ARCHIVOS FALTANTES (5 MINUTOS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  PASO 1: Identificar archivos necesarios
+  ────────────────────────────────────────
+
+    Necesitas subir estos 2 archivos HTML a PythonAnywhere:
+    
+    1. static/admin_login.html        (Página de login)
+    2. static/panel_admin.html        (Panel de administración)
+    
+    (Ya están en tu carpeta: D:\IDE_Cursor\DeptoInv\static\)
+
+
+  PASO 2: Subir archivos a PythonAnywhere
+  ────────────────────────────────────────
+
+    2.1 Ve a: https://www.pythonanywhere.com/
+    
+    2.2 Inicia sesión con tu cuenta
+    
+    2.3 Clic en "Files" (menú superior)
+    
+    2.4 Navega a la carpeta de tu proyecto:
+        /home/tu-usuario/static/
+    
+    2.5 Clic en "Upload a file"
+    
+    2.6 Sube estos 2 archivos (uno por uno):
+        - admin_login.html
+        - panel_admin.html
+    
+    ✅ Archivos subidos
+
+
+  PASO 3: Verificar que app.py tenga las rutas
+  ─────────────────────────────────────────────
+
+    3.1 En PythonAnywhere, ve a Files
+    
+    3.2 Abre: app.py
+    
+    3.3 Busca estas líneas (deberían estar):
+    
+        @app.route('/admin-login')
+        def admin_login():
+            return send_from_directory('static', 'admin_login.html')
+        
+        @app.route('/panel-admin')
+        def panel_admin():
+            return send_from_directory('static', 'panel_admin.html')
+    
+    3.4 Si NO están, agrégalas después de la ruta '/formulario'
+    
+    3.5 Guarda el archivo
+
+
+  PASO 4: Verificar config.py
+  ────────────────────────────
+
+    4.1 En Files, abre: config.py
+    
+    4.2 Verifica que tenga tu token:
+    
+        ADMIN_TOKEN = 'bRIWynRiD-kz0KsyHtrgvuyEbQtBgNXBaGqWlOX1cIU'
+    
+    4.3 Si NO está, agrégalo
+    
+    4.4 Guarda
+
+
+  PASO 5: Reload del sitio
+  ─────────────────────────
+
+    5.1 Ve a la pestaña "Web"
+    
+    5.2 Clic en el botón verde "Reload"
+    
+    5.3 Espera 10 segundos
+    
+    ✅ Sitio actualizado
+
+
+  PASO 6: Acceder al panel
+  ─────────────────────────
+
+    6.1 Abre: https://tu-usuario.pythonanywhere.com/admin-login
+    
+    6.2 Ingresa el token:
+        bRIWynRiD-kz0KsyHtrgvuyEbQtBgNXBaGqWlOX1cIU
+    
+    6.3 ¡Listo! Ya puedes ver los formularios
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔄 MÉTODO COMPLETO: REEMPLAZAR TODO EL PROYECTO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Si prefieres empezar de cero con todos los archivos:
+  
+  1. En PythonAnywhere, Consoles → Bash
+  
+  2. Respaldar el proyecto actual:
+     mv DeptoInv DeptoInv_backup
+  
+  3. Subir el nuevo ZIP:
+     - Files → Upload → DeptoInv_PythonAnywhere_20251013_185013.zip
+  
+  4. Descomprimir:
+     unzip DeptoInv_PythonAnywhere_*.zip
+  
+  5. Web → Reload
+  
+  6. Acceder a: /admin-login
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📋 URLS FINALES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Formulario público:
+  https://tu-usuario.pythonanywhere.com/formulario
+  
+  Login admin (NUEVO):
+  https://tu-usuario.pythonanywhere.com/admin-login
+  
+  Panel admin (NUEVO):
+  https://tu-usuario.pythonanywhere.com/panel-admin
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔑 TU TOKEN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  bRIWynRiD-kz0KsyHtrgvuyEbQtBgNXBaGqWlOX1cIU
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ⚠️ SI YA TIENES FORMULARIOS RECIBIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Si ya hay formularios en la carpeta /home/usuario/formularios/
+  NO los borres. El panel automáticamente los detectará y mostrará.
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║  ✅ Método rápido: Solo subir 2 archivos HTML (5 minutos)                   ║
+║  🔄 Método completo: Reemplazar todo el proyecto (10 minutos)               ║
+║  🎯 Ambos métodos funcionan perfectamente                                    ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+

@@ -1,0 +1,184 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║    🌐 CÓMO VER LOS 11 FORMULARIOS DEL SERVIDOR REMOTO                        ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ⚡ MÉTODO MÁS RÁPIDO (3 PASOS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  PASO 1: Conectarte al servidor por SSH
+  ──────────────────────────────────────
+  
+    Abre PowerShell y ejecuta:
+    
+    ssh tu-usuario@tu-servidor
+    
+    (Ingresa tu contraseña cuando lo solicite)
+
+
+  PASO 2: Ir al directorio del proyecto
+  ──────────────────────────────────────
+  
+    cd ~/DeptoInv
+
+
+  PASO 3: Ver el resumen de formularios
+  ──────────────────────────────────────
+  
+    python resumen_formularios.py
+    
+    ¡Listo! Verás los 11 formularios con todos los detalles
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🎯 MÉTODO CON PANEL WEB (Más completo)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OPCIÓN A: Con túnel SSH (RECOMENDADO)
+  ──────────────────────────────────────
+
+    1. En PowerShell, ejecuta:
+    
+       ssh -L 5000:localhost:5000 tu-usuario@tu-servidor
+    
+    
+    2. Dentro del servidor, ejecuta:
+    
+       cd ~/DeptoInv && python app.py
+    
+    
+    3. Abre tu navegador en:
+    
+       http://localhost:5000/admin-login
+    
+    
+    4. Ingresa el token:
+    
+       bRIWynRiD-kz0KsyHtrgvuyEbQtBgNXBaGqWlOX1cIU
+
+
+  OPCIÓN B: Acceso directo por IP (si el firewall lo permite)
+  ────────────────────────────────────────────────────────────
+
+    1. Conectarte al servidor:
+    
+       ssh tu-usuario@tu-servidor
+    
+    
+    2. Iniciar el servidor:
+    
+       cd ~/DeptoInv && python app.py
+    
+    
+    3. Abrir en navegador (desde tu PC):
+    
+       http://IP-DEL-SERVIDOR:5000/admin-login
+    
+       Ejemplo: http://192.168.1.100:5000/admin-login
+    
+    
+    4. Ingresar token:
+    
+       bRIWynRiD-kz0KsyHtrgvuyEbQtBgNXBaGqWlOX1cIU
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📥 DESCARGAR FORMULARIOS A TU PC
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Si quieres trabajar con los formularios localmente:
+  
+    Desde PowerShell en tu PC:
+    
+    scp -r tu-usuario@tu-servidor:~/DeptoInv/formularios/* D:\IDE_Cursor\DeptoInv\formularios\
+    
+    
+  Luego verlos localmente:
+  
+    cd D:\IDE_Cursor\DeptoInv
+    python resumen_formularios.py
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📊 LO QUE VERÁS - 11 FORMULARIOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  investigador_121219_20251013_221245.json
+  investigador_131140_20251013_143526.json
+  investigador_131171_20251013_173004.json
+  investigador_170184_20251013_145852.json
+  investigador_180159_20251013_151050.json
+  investigador_180337_20251013_202451.json
+  investigador_210202_20251013_174915.json
+  investigador_210208_20251013_203228.json  ┐
+  investigador_210208_20251013_203229.json  ├─ Mismo investigador
+  investigador_210208_20251013_212315.json  ┘  (3 registros)
+  investigador_2901989_20251013_192441.json
+
+  Total: 11 registros | Fecha: 13 de octubre 2025
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔑 INFORMACIÓN DE ACCESO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Token Admin:
+  bRIWynRiD-kz0KsyHtrgvuyEbQtBgNXBaGqWlOX1cIU
+
+  URL Login (con túnel):
+  http://localhost:5000/admin-login
+
+  URL Login (acceso directo):
+  http://IP-SERVIDOR:5000/admin-login
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  💡 SCRIPTS DE AYUDA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Doble clic en:
+  
+    CONECTAR_SERVIDOR_REMOTO.bat  ⭐ Menú interactivo
+    
+  Te ayudará paso a paso con:
+    - Conexión SSH
+    - Ver resumen
+    - Crear túnel
+    - Descargar formularios
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ❓ ¿NECESITAS LAS CREDENCIALES DEL SERVIDOR?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Si no recuerdas tu usuario/servidor, busca en:
+  
+    - Tu gestor de contraseñas
+    - Correos de configuración del servidor
+    - Documentación de tu institución
+    - Pregunta al administrador del sistema
+    
+  Formato típico:
+    usuario@servidor.upiiz.ipn.mx
+    usuario@192.168.x.x
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║  ✅ Con estos pasos podrás ver los 11 formularios del servidor remoto        ║
+║  🔒 Tu token de acceso está listo para usar                                   ║
+║  📊 Sistema operativo en producción                                           ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+
+  📞 ¿Necesitas ayuda?
+  ────────────────────
+  
+  Ejecuta: CONECTAR_SERVIDOR_REMOTO.bat
+  
+  O lee: ACCEDER_SERVIDOR_REMOTO.md
+
+

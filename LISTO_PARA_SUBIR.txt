@@ -1,0 +1,149 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║    ✅ TODO LISTO PARA PYTHONANYWHERE                                         ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📦 ARCHIVO ZIP CREADO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Archivo: DeptoInv_PythonAnywhere_20251013_185013.zip
+  
+  Ubicación: D:\IDE_Cursor\DeptoInv\
+  
+  Tamaño: 5.30 MB
+  
+  ✅ Incluye TODO lo necesario:
+     • app.py (servidor)
+     • static/ (panel admin + login)
+     • config.py (tu token)
+     • formularios/
+     • Todo el código necesario
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🚀 SIGUIENTE PASO: SUBIR A PYTHONANYWHERE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Ve a: https://www.pythonanywhere.com/
+  
+  2. Crea cuenta (botón "Start running Python online")
+     Username: upiizinvestigacion
+     Email: investigacion_UPIIZ@ipn.mx
+     Password: (tu contraseña)
+  
+  3. Files → Upload → Selecciona el ZIP
+  
+  4. Sigue la GUIA_SIMPLE_PYTHONANYWHERE.txt
+     (10 pasos súper simples)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🎯 RESULTADO FINAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  URL: https://upiizinvestigacion.pythonanywhere.com/admin-login
+  
+  Token: bRIWynRiD-kz0KsyHtrgvuyEbQtBgNXBaGqWlOX1cIU
+  
+  Panel admin accesible desde cualquier lugar 24/7
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📚 GUÍAS DISPONIBLES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ⭐ GUIA_SIMPLE_PYTHONANYWHERE.txt  (10 pasos con capturas visuales)
+  
+  📄 DESPLEGAR_PYTHONANYWHERE.md     (Guía técnica completa)
+  
+  📄 pythonanywhere_wsgi.py          (Archivo WSGI para copiar)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ⏱️ TIEMPO ESTIMADO: 20 MINUTOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  • Subir ZIP: 2 minutos
+  • Configurar: 15 minutos
+  • Probar: 3 minutos
+  
+  Total: ≈ 20 minutos
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  💰 COSTO: GRATIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ✅ Plan gratuito de PythonAnywhere
+  ✅ Sin tarjeta de crédito
+  ✅ HTTPS incluido
+  ✅ Sin fecha de expiración
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📋 RESUMEN DE LOS 10 PASOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ✅ 1. Preparar archivos (YA HECHO)
+  
+  2. Crear cuenta en PythonAnywhere
+  
+  3. Subir ZIP
+  
+  4. Descomprimir: unzip DeptoInv_*.zip
+  
+  5. Instalar: pip3.10 install --user flask flask-cors sqlalchemy pandas openpyxl flask-limiter
+  
+  6. Crear Web App (Manual configuration + Python 3.10)
+  
+  7. Configurar WSGI (copiar pythonanywhere_wsgi.py)
+  
+  8. Configurar static files: /static/ → /home/usuario/DeptoInv/static/
+  
+  9. Reload del sitio
+  
+  10. Acceder: https://usuario.pythonanywhere.com/admin-login
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔄 COPIAR FORMULARIOS DEL SERVIDOR REMOTO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Una vez configurado PythonAnywhere, necesitas copiar los 11 formularios
+  del servidor remoto a PythonAnywhere.
+  
+  En la consola Bash de PythonAnywhere:
+  
+  cd ~/DeptoInv
+  scp -r usuario@servidor:~/DeptoInv/formularios/* formularios/
+  
+  Luego Reload del sitio web.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✅ ¿QUÉ HACER AHORA?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Abre: GUIA_SIMPLE_PYTHONANYWHERE.txt
+  
+  2. Ve a: https://www.pythonanywhere.com/
+  
+  3. Sigue los pasos de la guía
+  
+  4. En 20 minutos tendrás tu panel en línea
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║  ✅ TODO está preparado y listo para subir                                   ║
+║  📦 ZIP creado con éxito                                                     ║
+║  📖 Guías disponibles                                                        ║
+║  🚀 Solo falta seguir los 10 pasos simples                                  ║
+║                                                                               ║
+║  🌐 En 20 minutos: https://tuusuario.pythonanywhere.com/admin-login         ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+
