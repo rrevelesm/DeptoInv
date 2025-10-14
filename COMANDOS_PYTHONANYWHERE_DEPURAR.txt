@@ -1,0 +1,278 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║    🔧 DEPURACIÓN EXPERTA - ERROR "NOT FOUND" EN PYTHONANYWHERE               ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔍 DIAGNÓSTICO: Por qué aparece "Not Found"
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Posibles causas:
+  
+  ❌ 1. No se hizo git pull (archivos no actualizados)
+  ❌ 2. No se hizo Reload del sitio
+  ❌ 3. Los archivos no existen en PythonAnywhere
+  ❌ 4. El WSGI no está cargando app.py correctamente
+  ❌ 5. Hay un error en el código que rompe la app
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🚀 SOLUCIÓN COMPLETA (EJECUTA ESTOS COMANDOS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ABRE LA CONSOLA BASH EN PYTHONANYWHERE
+  ───────────────────────────────────────
+  
+  https://www.pythonanywhere.com/user/upiizinvestigacion/consoles/
+  
+  Clic en "Bash"
+
+
+  COMANDO 1: Verificar ubicación actual
+  ──────────────────────────────────────
+  
+  pwd
+  
+  Debe mostrar algo como: /home/upiizinvestigacion
+  
+  
+  COMANDO 2: Ir al proyecto
+  ──────────────────────────
+  
+  cd DeptoInv
+  
+  
+  COMANDO 3: Verificar rama de Git
+  ─────────────────────────────────
+  
+  git branch
+  
+  Debe mostrar: * main
+  
+  
+  COMANDO 4: Ver estado de Git
+  ─────────────────────────────
+  
+  git status
+  
+  
+  COMANDO 5: Actualizar desde GitHub
+  ───────────────────────────────────
+  
+  git pull origin main
+  
+  
+  Si dice "Already up to date":
+  ────────────────────────────────
+  Entonces necesitas forzar la actualización:
+  
+  git fetch --all
+  git reset --hard origin/main
+  
+  
+  COMANDO 6: Verificar que los archivos existan
+  ──────────────────────────────────────────────
+  
+  ls -la static/admin_login.html
+  ls -la static/panel_admin.html
+  
+  Debe mostrar los archivos con sus tamaños y fechas
+  
+  
+  COMANDO 7: Verificar que app.py tenga las rutas
+  ────────────────────────────────────────────────
+  
+  grep -n "admin-login" app.py
+  grep -n "panel-admin" app.py
+  
+  Debe mostrar líneas 79 y 83 con las rutas
+  
+  
+  COMANDO 8: Ver el directorio completo
+  ──────────────────────────────────────
+  
+  ls -la
+  
+  Verifica que estén:
+  - app.py
+  - models.py
+  - security_utils.py
+  - config.py
+  - static/
+  - formularios/
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🌐 DESPUÉS DE EJECUTAR LOS COMANDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  PASO A: Ir a Web App
+  ────────────────────
+  
+  https://www.pythonanywhere.com/web_app_setup/upiizinvestigacion.pythonanywhere.com/
+  
+  
+  PASO B: Verificar configuración
+  ────────────────────────────────
+  
+  Busca la sección "Code:" y verifica:
+  
+  ✅ Source code: /home/upiizinvestigacion/DeptoInv
+  ✅ Working directory: /home/upiizinvestigacion/DeptoInv
+  ✅ WSGI configuration file: (clic en el link)
+  
+  
+  PASO C: Verificar WSGI
+  ──────────────────────
+  
+  El archivo WSGI debe contener:
+  
+  import sys
+  import os
+  
+  project_home = '/home/upiizinvestigacion/DeptoInv'
+  if project_home not in sys.path:
+      sys.path.insert(0, project_home)
+  
+  from app import app as application
+  
+  
+  PASO D: RELOAD (MUY IMPORTANTE)
+  ────────────────────────────────
+  
+  1. Clic en el botón verde "Reload"
+  
+  2. Espera 15 segundos
+  
+  3. Verifica el log de errores:
+     Busca "Log files" → "Error log"
+     
+  4. Si hay errores, cópialos
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔥 SOLUCIÓN RÁPIDA (SI TIENES PRISA)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  En PythonAnywhere Bash, ejecuta TODO esto de una vez:
+  
+  cd ~/DeptoInv && git fetch --all && git reset --hard origin/main && ls static/admin*.html
+  
+  
+  Luego:
+  Web → Reload → Espera 15 segundos
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📊 VERIFICACIÓN FINAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Después del Reload, prueba estas URLs:
+  
+  ✅ https://upiizinvestigacion.pythonanywhere.com/
+  ✅ https://upiizinvestigacion.pythonanywhere.com/formulario
+  ✅ https://upiizinvestigacion.pythonanywhere.com/admin-login
+  
+  
+  Si TODAS dan "Not Found":
+  ─────────────────────────
+  El problema es el WSGI. Verifica el archivo WSGI.
+  
+  
+  Si solo /admin-login da "Not Found":
+  ────────────────────────────────────
+  Los archivos no se descargaron. Haz git reset --hard origin/main
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔧 DEPURACIÓN AVANZADA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Ver el log de errores de Python:
+  ─────────────────────────────────
+  
+  En PythonAnywhere Bash:
+  
+  tail -50 /var/log/upiizinvestigacion.pythonanywhere.com.error.log
+  
+  
+  Probar que Flask cargue correctamente:
+  ──────────────────────────────────────
+  
+  cd ~/DeptoInv
+  python3.10 -c "from app import app; print(app.url_map)"
+  
+  Debe mostrar todas las rutas incluyendo /admin-login
+  
+  
+  Verificar imports:
+  ──────────────────
+  
+  python3.10 -c "from app import app; print('OK')"
+  
+  Si da error, instala lo que falte:
+  pip3.10 install --user flask flask-cors sqlalchemy
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🎯 COMANDOS EN ORDEN (COPIA Y PEGA UNO POR UNO)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  # 1. Ir al proyecto
+  cd ~/DeptoInv
+  
+  # 2. Verificar rama
+  git branch
+  
+  # 3. Forzar actualización
+  git fetch --all
+  git reset --hard origin/main
+  
+  # 4. Verificar archivos
+  ls -la static/admin_login.html
+  ls -la static/panel_admin.html
+  
+  # 5. Verificar rutas en app.py
+  grep "admin-login" app.py
+  
+  # 6. Probar que Flask cargue
+  python3.10 -c "from app import app; print('Flask OK')"
+  
+  # 7. Ver todas las rutas disponibles
+  python3.10 -c "from app import app; print(list(app.url_map.iter_rules()))"
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📝 DESPUÉS DE EJECUTAR LOS COMANDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  COPIA Y PEGA AQUÍ LOS RESULTADOS:
+  
+  Resultado de "ls -la static/admin_login.html":
+  
+  _______________________________________________________________
+  
+  
+  Resultado de "grep admin-login app.py":
+  
+  _______________________________________________________________
+  
+  
+  Resultado de "python3.10 -c from app import app...":
+  
+  _______________________________________________________________
+  
+  
+  Con esa información te diré exactamente qué está mal.
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║  ⚡ Ejecuta los comandos de arriba en PythonAnywhere                         ║
+║  📋 Copia los resultados                                                     ║
+║  💬 Pégalos aquí para que pueda depurar el problema exacto                   ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+
