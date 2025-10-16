@@ -6,278 +6,16 @@ from models import (
 )
 from datetime import datetime
 import os
-import secrets
-
-# Intentar importar Flask-Limiter (opcional)
-try:
-    from flask_limiter import Limiter
-    from flask_limiter.util import get_remote_address
-    LIMITER_AVAILABLE = True
-except ImportError:
-    LIMITER_AVAILABLE = False
-    print("⚠️  Flask-Limiter no instalado - Rate limiting desactivado")
-    print("⚠️  Instala con: pip install Flask-Limiter")
-
-# Importar utilidades de seguridad
-from security_utils import (
-    require_auth, validar_archivo, generar_nombre_archivo_seguro,
-    validar_datos_investigador, sanitizar_datos_formulario,
-    log_archivo_rechazado, log_actividad_sospechosa
-)
 
 app = Flask(__name__, static_folder='static')
-
-# 🔒 CONFIGURACIÓN DE SEGURIDAD
-# SECRET_KEY para sesiones seguras (en producción usar variable de entorno)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', secrets.token_hex(32))
-
-# CORS Restringido - Solo permitir orígenes específicos
-CORS(app, resources={
-    r"/api/formulario-investigador": {
-        "origins": ["http://127.0.0.1:5000", "http://localhost:5000", "http://192.168.0.6:5000"],
-        "methods": ["POST"],
-        "allow_headers": ["Content-Type"]
-    },
-    r"/api/investigadores": {
-        "origins": ["http://127.0.0.1:5000", "http://localhost:5000"],
-        "methods": ["GET", "POST", "PUT", "DELETE"],
-        "allow_headers": ["Content-Type", "Authorization"]
-    }
-})
-
-# Rate Limiting - Protección contra DDoS y spam (si está disponible)
-if LIMITER_AVAILABLE:
-    limiter = Limiter(
-        app=app,
-        key_func=get_remote_address,
-        default_limits=["200 per day", "50 per hour"],
-        storage_uri="memory://"
-    )
-else:
-    # Decorador dummy si no está Flask-Limiter
-    class DummyLimiter:
-        def limit(self, *args, **kwargs):
-            def decorator(f):
-                return f
-            return decorator
-    limiter = DummyLimiter()
+CORS(app)
 
 # Inicializar base de datos
 init_db()
 
-# Ruta para el formulario de investigadores
-@app.route('/formulario')
-def formulario():
-    return send_from_directory('static', 'formulario_investigador.html')
-
-# Ruta para el panel de formularios (antiguo)
-@app.route('/panel-formularios')
-def panel_formularios():
-    return send_from_directory('static', 'panel_formularios.html')
-
-# 🔐 Rutas de autenticación y panel admin
-@app.route('/admin-login')
-def admin_login():
-    return send_from_directory('static', 'admin_login.html')
-
-@app.route('/panel-admin')
-def panel_admin():
-    return send_from_directory('static', 'panel_admin.html')
-
-@app.route('/descargar')
-def descargar_formularios_page():
-    return send_from_directory('static', 'descargar_formularios.html')
-
-# API para listar formularios recibidos
-@app.route('/api/formularios-lista', methods=['GET'])
-@require_auth  # 🔒 Protegido - requiere token de admin
-def listar_formularios():
-    """Lista todos los formularios recibidos"""
-    import json
-    
-    try:
-        formularios_dir = 'formularios'
-        if not os.path.exists(formularios_dir):
-            return jsonify([])
-        
-        archivos = [f for f in os.listdir(formularios_dir) if f.endswith('.json')]
-        formularios = []
-        
-        for archivo in archivos:
-            try:
-                ruta = os.path.join(formularios_dir, archivo)
-                with open(ruta, 'r', encoding='utf-8') as f:
-                    datos = json.load(f)
-                    datos['_archivo'] = archivo
-                    formularios.append(datos)
-            except Exception as e:
-                continue
-        
-        # Ordenar por timestamp descendente
-        formularios.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
-        
-        return jsonify(formularios)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
-
-# API para descargar formularios como ZIP
-@app.route('/api/descargar-formularios-zip', methods=['GET'])
-@require_auth  # 🔒 Protegido - requiere token de admin
-@limiter.limit("10 per hour")  # Límite de descargas
-def descargar_formularios_zip():
-    """Descarga todos los formularios JSON en un archivo ZIP"""
-    import zipfile
-    import io
-    from flask import send_file
-    from datetime import datetime as dt
-    
-    try:
-        formularios_dir = 'formularios'
-        if not os.path.exists(formularios_dir):
-            return jsonify({'error': 'No hay formularios'}), 404
-        
-        archivos = [f for f in os.listdir(formularios_dir) if f.endswith('.json')]
-        
-        if not archivos:
-            return jsonify({'error': 'No hay formularios para descargar'}), 404
-        
-        # Crear archivo ZIP en memoria
-        memory_file = io.BytesIO()
-        
-        with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
-            for archivo in archivos:
-                ruta = os.path.join(formularios_dir, archivo)
-                zf.write(ruta, archivo)
-        
-        memory_file.seek(0)
-        
-        # Nombre del archivo con timestamp
-        timestamp = dt.now().strftime('%Y%m%d_%H%M%S')
-        nombre_zip = f'Formularios_UPIIZ_{timestamp}.zip'
-        
-        return send_file(
-            memory_file,
-            mimetype='application/zip',
-            as_attachment=True,
-            download_name=nombre_zip
-        )
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
-
-# API para exportar formularios a Excel
-@app.route('/api/exportar-formularios-excel', methods=['GET'])
-@require_auth  # 🔒 Protegido - requiere token de admin
-@limiter.limit("10 per hour")  # Límite de descargas
-def exportar_excel_endpoint():
-    """Exporta todos los formularios a Excel y lo descarga"""
-    import json
-    import pandas as pd
-    from flask import send_file
-    from datetime import datetime as dt
-    
-    try:
-        formularios_dir = 'formularios'
-        if not os.path.exists(formularios_dir):
-            return jsonify({'error': 'No hay formularios'}), 404
-        
-        archivos = [f for f in os.listdir(formularios_dir) if f.endswith('.json')]
-        
-        if not archivos:
-            return jsonify({'error': 'No hay formularios para exportar'}), 404
-        
-        datos_investigadores = []
-        
-        for archivo in archivos:
-            try:
-                ruta = os.path.join(formularios_dir, archivo)
-                with open(ruta, 'r', encoding='utf-8') as f:
-                    datos = json.load(f)
-                
-                # Procesar proyectos
-                proyectos_texto = []
-                if 'proyectosVigentes' in datos and datos['proyectosVigentes']:
-                    for proy in datos['proyectosVigentes']:
-                        proyectos_texto.append(f"{proy.get('categoria', 'N/A')}: {proy.get('nombre', 'N/A')}")
-                proyectos_str = '\n'.join(proyectos_texto) if proyectos_texto else 'Sin proyectos'
-                
-                # Procesar líneas
-                lineas_str = '\n'.join(datos.get('lineasInvestigacion', [])) if datos.get('lineasInvestigacion') else 'N/A'
-                
-                # Procesar publicaciones
-                pubs_texto = []
-                if 'publicaciones2025' in datos and datos['publicaciones2025']:
-                    for pub in datos['publicaciones2025']:
-                        pubs_texto.append(f"{pub.get('tipo', 'N/A')}: {pub.get('doi', 'N/A')}")
-                pubs_str = '\n'.join(pubs_texto) if pubs_texto else 'Sin publicaciones 2025'
-                
-                # Construir nombre completo (manejar formato nuevo y viejo)
-                nombre_completo = datos.get('nombreCompleto')
-                if not nombre_completo or nombre_completo == 'N/A':
-                    # Formato antiguo: nombres, apellidoPaterno, apellidoMaterno separados
-                    nombres = datos.get('nombres', '')
-                    apellido_pat = datos.get('apellidoPaterno', '')
-                    apellido_mat = datos.get('apellidoMaterno', '')
-                    nombre_completo = f"{nombres} {apellido_pat} {apellido_mat}".strip()
-                
-                fila = {
-                    'Nombre Completo': nombre_completo or 'N/A',
-                    'CURP': datos.get('curp', ''),
-                    'Fecha Nacimiento': datos.get('fechaNacimiento', ''),
-                    'Género': datos.get('genero', ''),
-                    'Clave Empleado': datos.get('claveEmpleado', ''),
-                    'Categoría': datos.get('categoria', ''),
-                    'Tipo Plaza': datos.get('tipoPlaza', ''),
-                    'Horas Contratación': datos.get('horasContratacion', ''),
-                    'Fecha Ingreso IPN': datos.get('fechaIngresoIPN', ''),
-                    'CVU': datos.get('cvu', ''),
-                    'Correo Institucional': datos.get('correoInstitucional', ''),
-                    'Teléfono': datos.get('telefonoCelular', '') if datos.get('aceptaContacto') == 'Si' else 'N/A',
-                    'Tiene Proyecto': datos.get('tieneProyectoVigente', 'No'),
-                    'Proyectos': proyectos_str,
-                    'Beca EDI': datos.get('nivelEDI', '') if datos.get('cuentaBecaEDI') == 'Si' else 'No',
-                    'SNII': datos.get('nivelSNII', '') if datos.get('cuentaSNII') == 'Si' else 'No',
-                    'SNII Vigencia': f"{datos.get('sniiInicio', '')} - {datos.get('sniiFinal', '')}" if datos.get('cuentaSNII') == 'Si' else 'N/A',
-                    'ORCID': datos.get('orcid', ''),
-                    'Líneas Investigación': lineas_str,
-                    'Publicaciones 2025': pubs_str,
-                    'Fecha Registro': datos.get('timestamp', '')
-                }
-                
-                datos_investigadores.append(fila)
-            except:
-                continue
-        
-        df = pd.DataFrame(datos_investigadores)
-        df = df.sort_values('Fecha Registro', ascending=False)
-        
-        # Crear archivo Excel
-        timestamp = dt.now().strftime('%Y%m%d_%H%M%S')
-        nombre_excel = f'Formularios_UPIIZ_{timestamp}.xlsx'
-        
-        with pd.ExcelWriter(nombre_excel, engine='openpyxl') as writer:
-            df.to_excel(writer, sheet_name='Investigadores', index=False)
-            worksheet = writer.sheets['Investigadores']
-            
-            for column in worksheet.columns:
-                max_length = 0
-                column_letter = column[0].column_letter
-                for cell in column:
-                    try:
-                        if len(str(cell.value)) > max_length:
-                            max_length = len(str(cell.value))
-                    except:
-                        pass
-                adjusted_width = min(max_length + 2, 50)
-                worksheet.column_dimensions[column_letter].width = adjusted_width
-        
-        return send_file(nombre_excel, as_attachment=True, download_name=nombre_excel)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
-
 # ============== RUTAS DE INVESTIGADORES ==============
 
 @app.route('/api/investigadores', methods=['GET'])
-@require_auth  # 🔒 Protegido - requiere token de admin
 def get_investigadores():
     session = get_session()
     try:
@@ -287,7 +25,6 @@ def get_investigadores():
         session.close()
 
 @app.route('/api/investigadores/<int:id>', methods=['GET'])
-@require_auth  # 🔒 Protegido
 def get_investigador(id):
     session = get_session()
     try:
@@ -306,7 +43,6 @@ def get_investigador(id):
         session.close()
 
 @app.route('/api/investigadores', methods=['POST'])
-@require_auth  # 🔒 Protegido
 def create_investigador():
     session = get_session()
     try:
@@ -334,7 +70,6 @@ def create_investigador():
         session.close()
 
 @app.route('/api/investigadores/<int:id>', methods=['PUT'])
-@require_auth  # 🔒 Protegido
 def update_investigador(id):
     session = get_session()
     try:
@@ -366,7 +101,6 @@ def update_investigador(id):
         session.close()
 
 @app.route('/api/investigadores/<int:id>', methods=['DELETE'])
-@require_auth  # 🔒 Protegido
 def delete_investigador(id):
     session = get_session()
     try:
@@ -511,7 +245,6 @@ def create_proyecto():
     try:
         data = request.json
         proyecto = Proyecto(
-            clave_sip=data.get('clave_sip'),
             titulo=data['titulo'],
             descripcion=data.get('descripcion'),
             tipo=data.get('tipo'),
@@ -548,7 +281,6 @@ def update_proyecto(id):
             return jsonify({'error': 'Proyecto no encontrado'}), 404
         
         data = request.json
-        proyecto.clave_sip = data.get('clave_sip', proyecto.clave_sip)
         proyecto.titulo = data.get('titulo', proyecto.titulo)
         proyecto.descripcion = data.get('descripcion', proyecto.descripcion)
         proyecto.tipo = data.get('tipo', proyecto.tipo)
@@ -715,97 +447,6 @@ def delete_publicacion(id):
 
 # ============== RUTAS DE ESTADÍSTICAS ==============
 
-@app.route('/api/formulario-investigador', methods=['POST'])
-@limiter.limit("5 per hour")  # 🔒 Máximo 5 formularios por hora por IP
-def guardar_formulario_investigador():
-    """Guarda los datos del formulario de investigador con archivo adjunto"""
-    import json
-    from datetime import datetime as dt
-    
-    try:
-        # Obtener datos JSON
-        datos_json = request.form.get('datos')
-        data = json.loads(datos_json) if datos_json else {}
-        
-        # 🔒 VALIDAR DATOS DEL FORMULARIO
-        es_valido, errores = validar_datos_investigador(data)
-        if not es_valido:
-            log_actividad_sospechosa(
-                request.remote_addr,
-                '/api/formulario-investigador',
-                f"Datos inválidos: {', '.join(errores)}"
-            )
-            return jsonify({
-                'success': False,
-                'error': 'Datos inválidos',
-                'detalles': errores
-            }), 400
-        
-        # 🔒 SANITIZAR DATOS (limpiar caracteres peligrosos)
-        data = sanitizar_datos_formulario(data)
-        
-        # Crear directorios si no existen
-        if not os.path.exists('formularios'):
-            os.makedirs('formularios')
-        if not os.path.exists('formularios/constancias_snii'):
-            os.makedirs('formularios/constancias_snii')
-        
-        # Agregar timestamp
-        data['timestamp'] = dt.now().isoformat()
-        
-        # 🔒 VALIDAR Y GUARDAR ARCHIVO SNII CON SEGURIDAD
-        archivo_guardado = None
-        if 'sniiConstancia' in request.files:
-            archivo = request.files['sniiConstancia']
-            if archivo and archivo.filename:
-                try:
-                    # Validar archivo (tipo y tamaño)
-                    validar_archivo(archivo)
-                    
-                    # Generar nombre seguro
-                    nombre_archivo = generar_nombre_archivo_seguro(
-                        archivo.filename,
-                        prefijo=f"snii_{data.get('claveEmpleado', 'sin_clave')}"
-                    )
-                    
-                    ruta_archivo = os.path.join('formularios/constancias_snii', nombre_archivo)
-                    
-                    # Guardar archivo
-                    archivo.save(ruta_archivo)
-                    data['sniiConstanciaArchivo'] = ruta_archivo
-                    archivo_guardado = nombre_archivo
-                    
-                except ValueError as e:
-                    # Archivo inválido
-                    log_archivo_rechazado(request.remote_addr, archivo.filename, str(e))
-                    return jsonify({
-                        'success': False,
-                        'error': f'Archivo inválido: {str(e)}'
-                    }), 400
-        
-        # Guardar datos en archivo JSON
-        filename = f"formularios/investigador_{data.get('claveEmpleado', 'sin_clave')}_{dt.now().strftime('%Y%m%d_%H%M%S')}.json"
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-        
-        return jsonify({
-            'success': True,
-            'message': 'Formulario guardado exitosamente',
-            'archivo': filename,
-            'constancia_snii': archivo_guardado
-        }), 201
-    except Exception as e:
-        # Log de error general
-        log_actividad_sospechosa(
-            request.remote_addr,
-            '/api/formulario-investigador',
-            f"Error: {str(e)}"
-        )
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 400
-
 @app.route('/api/estadisticas', methods=['GET'])
 def get_estadisticas():
     session = get_session()
@@ -829,37 +470,19 @@ def get_estadisticas():
 def index():
     return send_from_directory('static', 'index.html')
 
+@app.route('/formulario')
+def formulario():
+    return send_from_directory('static', 'formulario_investigador.html')
+
+@app.route('/panel')
+def panel():
+    return send_from_directory('static', 'panel_formularios.html')
+
 @app.route('/<path:path>')
 def static_files(path):
     return send_from_directory('static', path)
 
 if __name__ == '__main__':
-    # host='0.0.0.0' permite acceso desde otras computadoras en la red local
-    # 🔒 DEBUG MODE: False en producción, True solo en desarrollo
-    DEBUG_MODE = os.environ.get('DEBUG', 'False').lower() == 'true'
-    
-    print("="*60)
-    print("🔒 SERVIDOR INICIANDO CON SEGURIDAD")
-    print("="*60)
-    if LIMITER_AVAILABLE:
-        print(f"🛡️  Rate Limiting: ✅ Activado (5 formularios/hora)")
-    else:
-        print(f"⚠️  Rate Limiting: ❌ DESACTIVADO (instalar Flask-Limiter)")
-    print(f"🔐 Autenticación: ✅ Requerida en rutas admin")
-    print(f"✅ Validación: ✅ Activada (CURP, email, archivos)")
-    print(f"🔒 CORS: ✅ Restringido a localhost")
-    print(f"⚙️  Debug Mode: {'ACTIVADO ⚠️' if DEBUG_MODE else 'DESACTIVADO ✅'}")
-    if DEBUG_MODE:
-        print("⚠️  ADVERTENCIA: Debug activo - NO usar en producción")
-    if not LIMITER_AVAILABLE:
-        print("")
-        print("⚠️  INSTALA FLASK-LIMITER:")
-        print("   pip install Flask-Limiter")
-    print("="*60)
-    print(f"📡 Servidor: http://127.0.0.1:5000")
-    print(f"📋 Formulario: http://127.0.0.1:5000/formulario")
-    print("="*60)
-    
-    app.run(host='0.0.0.0', debug=DEBUG_MODE, port=5000)
+    app.run(debug=True, port=5000)
 
 
